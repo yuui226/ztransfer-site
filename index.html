@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121212">
+<title>ZTransfer · Z传 — 尼康相机照片传输</title>
+<meta name="description" content="ZTransfer（Z传）：安卓手机通过 Wi-Fi 或 USB-C 连接尼康相机，浏览和传输 NEF、JPEG 与视频，支持大文件续传、组合筛选、高清预览、照片效果、实时监看与遥控。">
+<meta property="og:title" content="ZTransfer · Z传 — 从相机，到手机">
+<meta property="og:description" content="尼康相机的浏览、传输、预览与遥控工具，支持 Wi-Fi 与 USB-C 连接。">
+<meta property="og:image" content="icon-320.png">
+<link rel="icon" type="image/png" href="icon-320.png">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #121212;
+    --bg-top: #181818;
+    --bg-bottom: #0d0d0d;
+    --text: #e7e7e7;
+    --muted: #aeb3b8;
+    --blue: #4fc3f7;
+    --blue-soft: rgba(79, 195, 247, .14);
+    --orange: #ffb74d;
+    --green: #4caf50;
+    --red: #f44336;
+    --glass: rgba(30, 30, 30, .56);
+    --glass-heavy: rgba(30, 30, 30, .82);
+    --glass-button: rgba(37, 49, 59, .58);
+    --line: rgba(255, 255, 255, .14);
+    --line-strong: rgba(255, 255, 255, .26);
+    --shadow: 0 24px 70px rgba(0, 0, 0, .34);
+    --radius: 22px;
+    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    min-width: 300px;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, var(--bg-top), var(--bg) 42%, var(--bg-bottom));
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "MiSans", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .shell { width: min(100%, 1120px); margin: 0 auto; padding: 0 16px; }
+
+  .ambient {
+    position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+    background:
+      radial-gradient(circle at 12% 12%, rgba(79, 195, 247, .10), transparent 28rem),
+      radial-gradient(circle at 92% 38%, rgba(171, 71, 188, .08), transparent 26rem),
+      radial-gradient(circle at 32% 88%, rgba(255, 183, 77, .06), transparent 24rem);
+    animation: ambient-drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes ambient-drift {
+    from { transform: scale(1) translate3d(0, 0, 0); }
+    to { transform: scale(1.06) translate3d(-1.5%, 1%, 0); }
+  }
+
+  .glass {
+    position: relative;
+    background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.012)), var(--glass);
+    border: 1px solid var(--line);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.10), var(--shadow);
+    -webkit-backdrop-filter: blur(22px) saturate(120%);
+    backdrop-filter: blur(22px) saturate(120%);
+  }
+  .glass::before {
+    content: ""; position: absolute; inset: 0 12% auto; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent);
+    pointer-events: none;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: rgba(18,18,18,.68);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+  }
+  .nav-inner { height: 58px; display: flex; align-items: center; gap: 9px; }
+  .logo { width: 29px; height: 29px; flex: none; filter: drop-shadow(0 5px 12px rgba(0,0,0,.3)); }
+  .brand { font-size: .94rem; font-weight: 750; letter-spacing: .01em; white-space: nowrap; }
+  .nav-links { display: none; margin-left: auto; gap: 24px; color: var(--muted); font-size: .88rem; }
+  .nav-links a { text-decoration: none; transition: color .2s; }
+  .nav-download {
+    min-height: 40px; margin-left: auto; padding: 8px 15px; display: inline-flex; align-items: center;
+    border: 1px solid rgba(79,195,247,.36); border-radius: 999px;
+    background: rgba(79,195,247,.13); color: #dff6ff; text-decoration: none; font-size: .83rem; font-weight: 700;
+  }
+
+  .hero { padding: 18px 12px 52px; }
+  .hero-panel { overflow: hidden; border-radius: 26px; padding: 28px 20px 22px; }
+  .hero-panel::after {
+    content: ""; position: absolute; width: 220px; height: 220px; right: -100px; top: -120px;
+    border-radius: 50%; background: rgba(79,195,247,.12); filter: blur(32px); pointer-events: none;
+    animation: halo-breathe 5s ease-in-out infinite alternate;
+  }
+  @keyframes halo-breathe { to { transform: scale(1.18); opacity: .6; } }
+  .hero-copy { position: relative; z-index: 1; text-align: center; }
+  .eyebrow {
+    color: var(--blue); font-family: var(--mono); font-size: .69rem; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+  }
+  h1 { margin-top: 12px; font-size: clamp(2.55rem, 14vw, 4.4rem); line-height: 1.08; letter-spacing: -.045em; }
+  h1 span {
+    background: linear-gradient(135deg, #f7fbfd 12%, #7ed7ff 70%, #4fc3f7);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-text { max-width: 31rem; margin: 16px auto 0; color: var(--muted); font-size: .98rem; }
+  .hero-action { margin-top: 24px; }
+  .primary-button {
+    width: 100%; min-height: 52px; padding: 13px 22px; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.015)),
+      var(--glass-button);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 12px 28px rgba(0,0,0,.28);
+    color: #f1fbff; text-decoration: none; font-weight: 750;
+    transition: transform .18s ease, border-color .18s ease, background .18s ease;
+  }
+  .primary-button:active { transform: scale(.975); }
+  .facts { margin-top: 17px; display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+  .fact {
+    padding: 5px 9px; border: 1px solid rgba(255,255,255,.09); border-radius: 999px;
+    background: rgba(255,255,255,.025); color: #8f979d; font-family: var(--mono); font-size: .65rem; letter-spacing: .055em;
+  }
+
+  .device-stage { position: relative; z-index: 1; height: 215px; margin-top: 24px; display: grid; place-items: center; }
+  .stage-glow {
+    position: absolute; width: 78%; height: 70%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,195,247,.16), transparent 66%); filter: blur(14px);
+  }
+  .device-row { width: min(100%, 390px); display: flex; align-items: center; justify-content: center; gap: 7px; }
+  .camera-unit, .phone-unit {
+    position: relative; flex: none; border: 1px solid rgba(255,255,255,.18);
+    background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.015)), rgba(22,22,22,.72);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 18px 34px rgba(0,0,0,.35);
+  }
+  .camera-unit { width: 84px; height: 62px; border-radius: 15px; }
+  .camera-top { position: absolute; width: 25px; height: 9px; left: 18px; top: -7px; border: 1px solid rgba(255,255,255,.18); border-radius: 5px 5px 2px 2px; background: #252525; }
+  .lens { position: absolute; width: 39px; height: 39px; left: 23px; top: 12px; border: 2px solid #53616a; border-radius: 50%; box-shadow: inset 0 0 0 7px #17191a, inset 0 0 0 9px rgba(79,195,247,.25); }
+  .camera-light { position: absolute; right: 10px; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: var(--red); box-shadow: 0 0 8px rgba(244,67,54,.65); }
+  .phone-unit { width: 42px; height: 78px; padding: 7px 4px; border-radius: 11px; }
+  .phone-screen { height: 100%; padding: 3px; display: grid; grid-template-columns: repeat(2,1fr); gap: 3px; border-radius: 6px; background: #111; }
+  .phone-screen i { border-radius: 2px; background: linear-gradient(145deg, #385264, #1d282f); animation: cell-pulse 3.2s ease-in-out infinite; }
+  .phone-screen i:nth-child(2) { animation-delay: .6s; }
+  .phone-screen i:nth-child(3) { animation-delay: 1.2s; }
+  .phone-screen i:nth-child(4) { animation-delay: 1.8s; }
+  @keyframes cell-pulse { 50% { background: linear-gradient(145deg, #4fc3f7, #28566b); } }
+  .link-track { position: relative; flex: 1; min-width: 92px; max-width: 180px; height: 64px; }
+  .link-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(79,195,247,.6), transparent); }
+  .packet { position: absolute; top: calc(50% - 8px); left: 0; width: 16px; height: 16px; border-radius: 5px; border: 1px solid rgba(126,215,255,.65); background: rgba(79,195,247,.22); box-shadow: 0 0 14px rgba(79,195,247,.42); animation: packet-run 3s linear infinite; opacity: 0; }
+  .packet:nth-child(2) { animation-delay: 1s; }
+  .packet:nth-child(3) { animation-delay: 2s; }
+  @keyframes packet-run {
+    0% { transform: translateX(0) scale(.75); opacity: 0; }
+    12%, 82% { opacity: 1; }
+    100% { transform: translateX(calc(var(--track-width, 140px) - 16px)) scale(1); opacity: 0; }
+  }
+  .mode-badge {
+    position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    padding: 4px 9px; border-radius: 999px; border: 1px solid rgba(79,195,247,.20);
+    background: rgba(13,20,24,.72); color: #a8dff6; font-family: var(--mono); font-size: .61rem; letter-spacing: .08em;
+  }
+
+  section { padding-top: 64px; scroll-margin-top: 60px; }
+  .section-head { margin-bottom: 24px; text-align: center; }
+  h2 { margin-top: 5px; font-size: clamp(1.55rem, 7vw, 2.2rem); line-height: 1.2; letter-spacing: -.02em; }
+
+  .bento { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .feature-card {
+    overflow: hidden; min-height: 150px; padding: 19px 18px; border-radius: 20px;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  .feature-card::after {
+    content: ""; position: absolute; width: 96px; height: 96px; right: -45px; bottom: -55px;
+    border-radius: 50%; background: var(--card-glow, rgba(79,195,247,.10)); filter: blur(18px); pointer-events: none;
+  }
+  .feature-top { display: flex; align-items: center; gap: 11px; }
+  .feature-icon {
+    width: 38px; height: 38px; flex: none; display: grid; place-items: center;
+    border: 1px solid rgba(255,255,255,.15); border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.015)), rgba(79,195,247,.08);
+    color: var(--blue); box-shadow: inset 0 1px 0 rgba(255,255,255,.11);
+  }
+  .feature-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .feature-card h3 { font-size: 1.02rem; }
+  .feature-card p { margin-top: 12px; color: var(--muted); font-size: .89rem; }
+  .feature-card.accent-orange { --card-glow: rgba(255,183,77,.10); }
+  .feature-card.accent-orange .feature-icon { color: var(--orange); background-color: rgba(255,183,77,.07); }
+  .feature-card.accent-purple { --card-glow: rgba(171,71,188,.12); }
+  .feature-card.accent-purple .feature-icon { color: #ce86dd; background-color: rgba(171,71,188,.08); }
+
+  .connection-panel { border-radius: var(--radius); padding: 22px 16px; }
+  .start-node {
+    width: fit-content; margin: 0 auto 18px; padding: 9px 14px; border-radius: 999px;
+    border: 1px solid rgba(79,195,247,.30); background: var(--blue-soft); color: #d9f4ff; font-weight: 700; font-size: .9rem;
+  }
+  .connection-line { width: 1px; height: 18px; margin: -18px auto 0; background: linear-gradient(var(--blue), transparent); opacity: .7; }
+  .connection-modes { margin-top: 0; display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .mode-card { padding: 17px 16px; border: 1px solid rgba(255,255,255,.10); border-radius: 17px; background: rgba(255,255,255,.025); }
+  .mode-card b { display: flex; align-items: center; gap: 8px; font-size: .98rem; }
+  .mode-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 12px rgba(79,195,247,.6); }
+  .mode-card:nth-child(2) .mode-dot { background: var(--orange); box-shadow: 0 0 12px rgba(255,183,77,.5); }
+  .mode-card p { margin-top: 6px; color: var(--muted); font-size: .86rem; }
+
+  .remote-panel { overflow: hidden; border-radius: var(--radius); padding: 22px 17px; }
+  .remote-panel::after {
+    content: ""; position: absolute; inset: auto -90px -120px auto; width: 260px; height: 260px;
+    border-radius: 50%; background: rgba(171,71,188,.11); filter: blur(36px); pointer-events: none;
+  }
+  .viewfinder {
+    position: relative; z-index: 1; aspect-ratio: 16/10; overflow: hidden; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.15);
+    background:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+      radial-gradient(circle at 62% 40%, rgba(79,195,247,.19), transparent 30%),
+      linear-gradient(145deg, #20282d, #111516);
+    background-size: 33.333% 33.333%, 33.333% 33.333%, auto, auto;
+  }
+  .focus-box { position: absolute; width: 46px; height: 34px; left: 54%; top: 38%; border: 1px solid var(--green); border-radius: 4px; box-shadow: 0 0 12px rgba(76,175,80,.24); animation: focus-breathe 2.6s ease-in-out infinite; }
+  @keyframes focus-breathe { 50% { transform: scale(.92); opacity: .68; } }
+  .viewfinder-status { position: absolute; left: 10px; top: 9px; color: #dff7e1; font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; }
+  .viewfinder-exif { position: absolute; left: 10px; right: 10px; bottom: 8px; display: flex; justify-content: space-between; color: rgba(255,255,255,.70); font-family: var(--mono); font-size: .6rem; }
+  .remote-copy { position: relative; z-index: 1; margin-top: 20px; }
+  .remote-copy h3 { font-size: 1.18rem; }
+  .remote-copy p { margin-top: 8px; color: var(--muted); font-size: .89rem; }
+  .tool-chips { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .tool-chip { padding: 6px 9px; border: 1px solid rgba(255,255,255,.10); border-radius: 999px; background: rgba(255,255,255,.025); color: #c6cbd0; font-size: .72rem; }
+  .remote-note { margin-top: 12px !important; color: #7e878e !important; font-size: .75rem !important; }
+
+  .table-wrap { overflow: hidden; border-radius: var(--radius); }
+  table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+  th, td { padding: 11px 3px; border-bottom: 1px solid rgba(255,255,255,.08); text-align: center; font-size: .72rem; line-height: 1.35; overflow-wrap: anywhere; }
+  th { color: #818990; font-size: .67rem; font-weight: 600; }
+  th:first-child, td:first-child { width: 31%; padding-left: 10px; text-align: left; color: #c9cdd1; }
+  td.plan { color: #9edffb; font-weight: 650; }
+  tr:last-child td { border-bottom: 0; }
+
+  .download-panel { border-radius: var(--radius); padding: 30px 17px; text-align: center; }
+  .download-panel .primary-button { margin-top: 20px; }
+  .download-meta { margin-top: 13px; color: #828a90; font-family: var(--mono); font-size: .67rem; letter-spacing: .055em; }
+  .download-alt { margin-top: 15px; color: var(--muted); font-size: .82rem; }
+
+  footer { margin-top: 62px; padding: 28px 16px 36px; border-top: 1px solid rgba(255,255,255,.07); color: #7f878d; text-align: center; font-size: .78rem; }
+
+  .motion-ready .reveal { opacity: 0; transform: translateY(18px) scale(.992); }
+  .motion-ready .reveal.visible {
+    opacity: 1; transform: none;
+    transition: opacity .65s ease var(--reveal-delay, 0s), transform .65s cubic-bezier(.2,.75,.25,1) var(--reveal-delay, 0s);
+  }
+  .bento .reveal:nth-child(2) { --reveal-delay: .04s; }
+  .bento .reveal:nth-child(3) { --reveal-delay: .08s; }
+  .bento .reveal:nth-child(4) { --reveal-delay: .12s; }
+  .bento .reveal:nth-child(5) { --reveal-delay: .16s; }
+  .bento .reveal:nth-child(6) { --reveal-delay: .20s; }
+  .bento .reveal:nth-child(7) { --reveal-delay: .24s; }
+
+  @media (hover: hover) {
+    .nav-links a:hover { color: var(--text); }
+    .primary-button:hover { transform: translateY(-2px); border-color: rgba(126,215,255,.45); background-color: rgba(46,65,78,.68); }
+    .feature-card { transition: transform .22s ease, border-color .22s ease; }
+    .feature-card:hover { transform: translateY(-3px); border-color: rgba(126,215,255,.25); }
+  }
+
+  @media (min-width: 700px) {
+    .shell { padding: 0 24px; }
+    .nav-inner { height: 64px; }
+    .nav-links { display: flex; }
+    .nav-download { margin-left: 8px; }
+    .hero { padding: 38px 24px 72px; }
+    .hero-panel { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 34px; padding: 48px 50px; }
+    .hero-copy { text-align: left; }
+    .hero-text { margin-left: 0; }
+    .hero-action { display: flex; }
+    .primary-button { width: auto; min-width: 180px; }
+    .facts { justify-content: flex-start; }
+    .device-stage { height: 310px; margin-top: 0; }
+    .camera-unit { width: 112px; height: 82px; border-radius: 19px; }
+    .camera-top { width: 32px; height: 11px; left: 24px; }
+    .lens { width: 53px; height: 53px; left: 30px; top: 14px; }
+    .phone-unit { width: 54px; height: 100px; border-radius: 14px; }
+    .link-track { min-width: 120px; }
+    section { padding-top: 90px; }
+    .section-head { margin-bottom: 32px; }
+    .bento { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .feature-card { min-height: 164px; padding: 22px; }
+    .feature-card.wide { grid-column: 1 / -1; min-height: 145px; }
+    .connection-panel { padding: 30px; }
+    .connection-modes { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .remote-panel { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 34px; padding: 32px; }
+    .remote-copy { margin-top: 0; }
+    th, td { padding: 15px 10px; font-size: .9rem; }
+    th { font-size: .79rem; }
+    th:first-child, td:first-child { padding-left: 20px; }
+    .download-panel { padding: 46px 24px; }
+    .download-panel .primary-button { display: flex; width: fit-content; margin-right: auto; margin-left: auto; }
+  }
+
+  @media (min-width: 980px) {
+    .bento { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .feature-card.wide { grid-column: span 2; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .motion-ready .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"></div>
+
+<nav>
+  <div class="shell nav-inner">
+    <svg class="logo" viewBox="21 21 66 66" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="21" y="21" width="66" height="66" rx="12" fill="#20262A"/>
+      <path fill="#F4F7F8" d="M39.56,35 L63.12,35 L61.64,39.94 L35.34,68.06 L53.2,68.06 L51.72,73 L28.16,73 L29.64,68.06 L55.94,39.94 L38.08,39.94 Z"/>
+      <path fill="#20262A" stroke="#20262A" stroke-width="4.6" stroke-linejoin="round" d="M56.28,35 L79.84,35 L78.36,39.94 L52.06,68.06 L69.92,68.06 L68.44,73 L44.88,73 L46.36,68.06 L72.66,39.94 L54.8,39.94 Z"/>
+      <path fill="#7ED7FF" d="M56.28,35 L79.84,35 L78.36,39.94 L52.06,68.06 L69.92,68.06 L68.44,73 L44.88,73 L46.36,68.06 L72.66,39.94 L54.8,39.94 Z"/>
+    </svg>
+    <span class="brand">ZTransfer · Z传</span>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#connection">连接</a>
+      <a href="#versions">权益</a>
+    </div>
+    <a class="nav-download" href="#download">下载 APK</a>
+  </div>
+</nav>
+
+<header class="hero shell">
+  <div class="hero-panel glass reveal">
+    <div class="hero-copy">
+      <p class="eyebrow">Nikon · Android</p>
+      <h1>从相机，<br><span>到手机。</span></h1>
+      <p class="hero-text">把尼康相机的浏览、传输、预览与遥控，放进安卓手机。</p>
+      <div class="hero-action">
+        <a class="primary-button" href="#download">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+          下载 Z传
+        </a>
+      </div>
+      <div class="facts">
+        <span class="fact">WI-FI / USB-C</span>
+        <span class="fact">NEF / JPEG / VIDEO</span>
+        <span class="fact">ANDROID 8+</span>
+      </div>
+    </div>
+
+    <div class="device-stage" aria-hidden="true">
+      <div class="stage-glow"></div>
+      <div class="device-row">
+        <div class="camera-unit"><i class="camera-top"></i><i class="lens"></i><i class="camera-light"></i></div>
+        <div class="link-track" id="linkTrack">
+          <i class="packet"></i><i class="packet"></i><i class="packet"></i>
+          <span class="mode-badge">WI-FI · USB</span>
+        </div>
+        <div class="phone-unit"><div class="phone-screen"><i></i><i></i><i></i><i></i></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="shell" id="features">
+    <div class="section-head reveal">
+      <p class="eyebrow">Features</p>
+      <h2>一条完整的影像链路</h2>
+    </div>
+    <div class="bento">
+      <article class="feature-card glass reveal">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 8a12 12 0 0 1 16 0M7 12a8 8 0 0 1 10 0M10 16a3 3 0 0 1 4 0"/></svg></span><h3>Wi-Fi 与 USB-C</h3></div>
+        <p>相机热点无线连接，或 C to C 数据线有线连接。</p>
+      </article>
+
+      <article class="feature-card glass reveal accent-orange">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 15l5-5 4 4 3-3 4 4"/><circle cx="16" cy="9" r="1"/></svg></span><h3>原文件与大视频</h3></div>
+        <p>传输 NEF、JPEG 与机内视频；分块处理 4GB 以上大文件。</p>
+      </article>
+
+      <article class="feature-card glass reveal">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/><path d="M18 6a8 8 0 0 0-12 1"/></svg></span><h3>可靠传输队列</h3></div>
+        <p>实时进度、速度与耗时；断线后可续传，失败任务可重试。</p>
+      </article>
+
+      <article class="feature-card glass reveal accent-purple">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="17" r="3"/><path d="M18 15.5v3M16.5 17h3"/></svg></span><h3>新片与连拍整理</h3></div>
+        <p>自动发现新拍照片；按日期分组，自动识别连拍并保留机内保护标记。</p>
+      </article>
+
+      <article class="feature-card glass reveal">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/><circle cx="18" cy="6" r="2"/><circle cx="7" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></svg></span><h3>组合筛选</h3></div>
+        <p>文件类型、未传、保护、连拍、存储卡和拍摄日期可叠加筛选。</p>
+      </article>
+
+      <article class="feature-card glass reveal accent-orange">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM8 21h8M12 19v2"/><path d="M7 15l3-3 2 2 3-4 2 3"/></svg></span><h3>高清预览</h3></div>
+        <p>FHD 大图支持缩放与旋转，并显示光圈、快门、ISO 与焦距。</p>
+      </article>
+
+      <article class="feature-card glass reveal wide">
+        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg></span><h3>滤镜、边框与水印</h3></div>
+        <p>滤镜强度、边框样式、文字或 Logo 水印均可调整；效果图另存，原始文件不变。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="shell" id="connection">
+    <div class="section-head reveal">
+      <p class="eyebrow">Connection</p>
+      <h2>连接方式</h2>
+    </div>
+    <div class="connection-panel glass reveal">
+      <div class="start-node">01 · 打开 Z传</div>
+      <div class="connection-line"></div>
+      <div class="connection-modes">
+        <div class="mode-card"><b><i class="mode-dot"></i>02 · Wi-Fi</b><p>连接相机热点</p></div>
+        <div class="mode-card"><b><i class="mode-dot"></i>02 · USB-C</b><p>连接 C to C 数据线</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" id="remote">
+    <div class="section-head reveal">
+      <p class="eyebrow">Remote</p>
+      <h2>监看与遥控</h2>
+    </div>
+    <div class="remote-panel glass reveal">
+      <div class="viewfinder" aria-hidden="true">
+        <span class="viewfinder-status">● LIVE</span>
+        <i class="focus-box"></i>
+        <div class="viewfinder-exif"><span>S 1/250</span><span>f 2.8</span><span>ISO 100</span><span>EV 0.0</span></div>
+      </div>
+      <div class="remote-copy">
+        <h3>手机就是监看屏</h3>
+        <p>实时取景、点按对焦，调节快门、光圈、ISO 与曝光补偿，并控制拍照和录像。</p>
+        <div class="tool-chips">
+          <span class="tool-chip">高清 / 全屏</span><span class="tool-chip">直方图</span><span class="tool-chip">构图线</span>
+          <span class="tool-chip">斑马纹</span><span class="tool-chip">水平仪</span><span class="tool-chip">端侧录制</span>
+        </div>
+        <p class="remote-note">可用控制随相机能力呈现。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" id="versions">
+    <div class="section-head reveal">
+      <p class="eyebrow">Versions</p>
+      <h2>版本权益</h2>
+    </div>
+    <div class="table-wrap glass reveal">
+      <table>
+        <thead><tr><th>功能</th><th>免费版</th><th>年费版</th><th>永久版</th></tr></thead>
+        <tbody>
+          <tr><td>每日传输</td><td>25 个</td><td class="plan">不限数量</td><td class="plan">不限数量</td></tr>
+          <tr><td>单文件大小</td><td>≤ 400 MB</td><td class="plan">不限大小</td><td class="plan">不限大小</td></tr>
+          <tr><td>遥控 · 监看</td><td>3 分钟/天</td><td class="plan">不限时</td><td class="plan">不限时</td></tr>
+          <tr><td>端侧录制</td><td>不可用</td><td class="plan">可用</td><td class="plan">可用</td></tr>
+          <tr><td>边框与水印</td><td>默认水印</td><td class="plan">自由定制</td><td class="plan">自由定制</td></tr>
+          <tr><td>权益时间</td><td>长期免费</td><td class="plan">365 天</td><td class="plan">永久</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="shell" id="download">
+    <div class="download-panel glass reveal">
+      <p class="eyebrow">Download</p>
+      <h2>下载 Z传</h2>
+      <a class="primary-button" href="https://github.com/yuui226/ztransfer-site/releases/latest/download/ZTransfer.apk">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+        下载 APK
+      </a>
+      <p class="download-meta">ANDROID 8+ · APK</p>
+      <p class="download-alt">GitHub 无法访问时，可添加 QQ <b>953000922</b> 获取安装包。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  ZTransfer（Z传）· 尼康相机传图工具 · 非尼康官方产品<br>
+  QQ 953000922
+</footer>
+
+<script>
+  var track = document.getElementById('linkTrack');
+  function updateTrackWidth() {
+    if (track) track.style.setProperty('--track-width', track.offsetWidth + 'px');
+  }
+  updateTrackWidth();
+  addEventListener('resize', updateTrackWidth, { passive: true });
+
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('motion-ready');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -24px' });
+    document.querySelectorAll('.reveal').forEach(function (element) { observer.observe(element); });
+  }
+</script>
+</body>
+</html>
