@@ -1,520 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#121212">
-<title>ZTransfer · Z传 — 尼康相机照片传输</title>
-<meta name="description" content="ZTransfer（Z传）：安卓手机通过 Wi-Fi 或 USB-C 连接尼康相机，浏览和传输 NEF、JPEG 与视频，支持大文件续传、组合筛选、高清预览、照片效果、实时监看与遥控。">
-<meta property="og:title" content="ZTransfer · Z传 — 从相机，到手机">
-<meta property="og:description" content="尼康相机的浏览、传输、预览与遥控工具，支持 Wi-Fi 与 USB-C 连接。">
-<meta property="og:image" content="icon-320.png">
+<meta name="theme-color" content="#151916">
+<title>Z传 ZTransfer — 好照片，现在就带走</title>
+<meta name="description" content="Z传，让尼康相机与安卓手机默契配合。Wi-Fi 或 USB 连接，传输 NEF 原片、JPEG 与视频；轻松选片、制作照片效果，或把手机变成监看与遥控屏。免费下载 Android 版。">
+<link rel="canonical" href="https://www.ztransfer.top/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="Z传 — 好照片，现在就带走">
+<meta property="og:description" content="从尼康相机到安卓手机。传原片、选好片、做效果，拍摄之后的每一步，都顺手。">
+<meta property="og:url" content="https://www.ztransfer.top/">
+<meta property="og:image" content="https://www.ztransfer.top/assets/alpine-dawn.webp">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="901">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Z传 ZTransfer","applicationCategory":"MultimediaApplication","operatingSystem":"Android 8.0+","url":"https://www.ztransfer.top/","downloadUrl":"https://apk.ztransfer.top/ZTransfer.apk","description":"面向尼康相机的独立安卓工具，支持照片与视频传输、选片、照片效果、监看与遥控。"}</script>
 <link rel="icon" type="image/png" href="icon-320.png">
-<style>
-  :root {
-    color-scheme: dark;
-    --bg: #121212;
-    --bg-top: #181818;
-    --bg-bottom: #0d0d0d;
-    --text: #e7e7e7;
-    --muted: #aeb3b8;
-    --blue: #4fc3f7;
-    --blue-soft: rgba(79, 195, 247, .14);
-    --orange: #ffb74d;
-    --green: #4caf50;
-    --red: #f44336;
-    --glass: rgba(30, 30, 30, .56);
-    --glass-heavy: rgba(30, 30, 30, .82);
-    --glass-button: rgba(37, 49, 59, .58);
-    --line: rgba(255, 255, 255, .14);
-    --line-strong: rgba(255, 255, 255, .26);
-    --shadow: 0 24px 70px rgba(0, 0, 0, .34);
-    --radius: 22px;
-    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    min-width: 300px;
-    overflow-x: hidden;
-    background: linear-gradient(180deg, var(--bg-top), var(--bg) 42%, var(--bg-bottom));
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "MiSans", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; }
-  .shell { width: min(100%, 1120px); margin: 0 auto; padding: 0 16px; }
-
-  .ambient {
-    position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
-    background:
-      radial-gradient(circle at 12% 12%, rgba(79, 195, 247, .10), transparent 28rem),
-      radial-gradient(circle at 92% 38%, rgba(171, 71, 188, .08), transparent 26rem),
-      radial-gradient(circle at 32% 88%, rgba(255, 183, 77, .06), transparent 24rem);
-    animation: ambient-drift 18s ease-in-out infinite alternate;
-  }
-  @keyframes ambient-drift {
-    from { transform: scale(1) translate3d(0, 0, 0); }
-    to { transform: scale(1.06) translate3d(-1.5%, 1%, 0); }
-  }
-
-  .glass {
-    position: relative;
-    background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.012)), var(--glass);
-    border: 1px solid var(--line);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.10), var(--shadow);
-    -webkit-backdrop-filter: blur(22px) saturate(120%);
-    backdrop-filter: blur(22px) saturate(120%);
-  }
-  .glass::before {
-    content: ""; position: absolute; inset: 0 12% auto; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent);
-    pointer-events: none;
-  }
-
-  nav {
-    position: sticky; top: 0; z-index: 50;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    background: rgba(18,18,18,.68);
-    -webkit-backdrop-filter: blur(18px) saturate(125%);
-    backdrop-filter: blur(18px) saturate(125%);
-  }
-  .nav-inner { height: 58px; display: flex; align-items: center; gap: 9px; }
-  .logo { width: 29px; height: 29px; flex: none; filter: drop-shadow(0 5px 12px rgba(0,0,0,.3)); }
-  .brand { font-size: .94rem; font-weight: 750; letter-spacing: .01em; white-space: nowrap; }
-  .nav-links { display: none; margin-left: auto; gap: 24px; color: var(--muted); font-size: .88rem; }
-  .nav-links a { text-decoration: none; transition: color .2s; }
-  .nav-download {
-    min-height: 40px; margin-left: auto; padding: 8px 15px; display: inline-flex; align-items: center;
-    border: 1px solid rgba(79,195,247,.36); border-radius: 999px;
-    background: rgba(79,195,247,.13); color: #dff6ff; text-decoration: none; font-size: .83rem; font-weight: 700;
-  }
-
-  .hero { padding: 18px 12px 52px; }
-  .hero-panel { overflow: hidden; border-radius: 26px; padding: 28px 20px 22px; }
-  .hero-panel::after {
-    content: ""; position: absolute; width: 220px; height: 220px; right: -100px; top: -120px;
-    border-radius: 50%; background: rgba(79,195,247,.12); filter: blur(32px); pointer-events: none;
-    animation: halo-breathe 5s ease-in-out infinite alternate;
-  }
-  @keyframes halo-breathe { to { transform: scale(1.18); opacity: .6; } }
-  .hero-copy { position: relative; z-index: 1; text-align: center; }
-  .eyebrow {
-    color: var(--blue); font-family: var(--mono); font-size: .69rem; font-weight: 700;
-    letter-spacing: .18em; text-transform: uppercase;
-  }
-  h1 { margin-top: 12px; font-size: clamp(2.55rem, 14vw, 4.4rem); line-height: 1.08; letter-spacing: -.045em; }
-  h1 span {
-    background: linear-gradient(135deg, #f7fbfd 12%, #7ed7ff 70%, #4fc3f7);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .hero-text { max-width: 31rem; margin: 16px auto 0; color: var(--muted); font-size: .98rem; }
-  .hero-action { margin-top: 24px; }
-  .primary-button {
-    width: 100%; min-height: 52px; padding: 13px 22px; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-    border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.015)),
-      var(--glass-button);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 12px 28px rgba(0,0,0,.28);
-    color: #f1fbff; text-decoration: none; font-weight: 750;
-    transition: transform .18s ease, border-color .18s ease, background .18s ease;
-  }
-  .primary-button:active { transform: scale(.975); }
-  .facts { margin-top: 17px; display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
-  .fact {
-    padding: 5px 9px; border: 1px solid rgba(255,255,255,.09); border-radius: 999px;
-    background: rgba(255,255,255,.025); color: #8f979d; font-family: var(--mono); font-size: .65rem; letter-spacing: .055em;
-  }
-
-  .device-stage { position: relative; z-index: 1; height: 215px; margin-top: 24px; display: grid; place-items: center; }
-  .stage-glow {
-    position: absolute; width: 78%; height: 70%; border-radius: 50%;
-    background: radial-gradient(circle, rgba(79,195,247,.16), transparent 66%); filter: blur(14px);
-  }
-  .device-row { width: min(100%, 390px); display: flex; align-items: center; justify-content: center; gap: 7px; }
-  .camera-unit, .phone-unit {
-    position: relative; flex: none; border: 1px solid rgba(255,255,255,.18);
-    background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.015)), rgba(22,22,22,.72);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 18px 34px rgba(0,0,0,.35);
-  }
-  .camera-unit { width: 84px; height: 62px; border-radius: 15px; }
-  .camera-top { position: absolute; width: 25px; height: 9px; left: 18px; top: -7px; border: 1px solid rgba(255,255,255,.18); border-radius: 5px 5px 2px 2px; background: #252525; }
-  .lens { position: absolute; width: 39px; height: 39px; left: 23px; top: 12px; border: 2px solid #53616a; border-radius: 50%; box-shadow: inset 0 0 0 7px #17191a, inset 0 0 0 9px rgba(79,195,247,.25); }
-  .camera-light { position: absolute; right: 10px; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: var(--red); box-shadow: 0 0 8px rgba(244,67,54,.65); }
-  .phone-unit { width: 42px; height: 78px; padding: 7px 4px; border-radius: 11px; }
-  .phone-screen { height: 100%; padding: 3px; display: grid; grid-template-columns: repeat(2,1fr); gap: 3px; border-radius: 6px; background: #111; }
-  .phone-screen i { border-radius: 2px; background: linear-gradient(145deg, #385264, #1d282f); animation: cell-pulse 3.2s ease-in-out infinite; }
-  .phone-screen i:nth-child(2) { animation-delay: .6s; }
-  .phone-screen i:nth-child(3) { animation-delay: 1.2s; }
-  .phone-screen i:nth-child(4) { animation-delay: 1.8s; }
-  @keyframes cell-pulse { 50% { background: linear-gradient(145deg, #4fc3f7, #28566b); } }
-  .link-track { position: relative; flex: 1; min-width: 92px; max-width: 180px; height: 64px; }
-  .link-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: linear-gradient(90deg, transparent, rgba(79,195,247,.6), transparent); }
-  .packet { position: absolute; top: calc(50% - 8px); left: 0; width: 16px; height: 16px; border-radius: 5px; border: 1px solid rgba(126,215,255,.65); background: rgba(79,195,247,.22); box-shadow: 0 0 14px rgba(79,195,247,.42); animation: packet-run 3s linear infinite; opacity: 0; }
-  .packet:nth-child(2) { animation-delay: 1s; }
-  .packet:nth-child(3) { animation-delay: 2s; }
-  @keyframes packet-run {
-    0% { transform: translateX(0) scale(.75); opacity: 0; }
-    12%, 82% { opacity: 1; }
-    100% { transform: translateX(calc(var(--track-width, 140px) - 16px)) scale(1); opacity: 0; }
-  }
-  .mode-badge {
-    position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); white-space: nowrap;
-    padding: 4px 9px; border-radius: 999px; border: 1px solid rgba(79,195,247,.20);
-    background: rgba(13,20,24,.72); color: #a8dff6; font-family: var(--mono); font-size: .61rem; letter-spacing: .08em;
-  }
-
-  section { padding-top: 64px; scroll-margin-top: 60px; }
-  .section-head { margin-bottom: 24px; text-align: center; }
-  h2 { margin-top: 5px; font-size: clamp(1.55rem, 7vw, 2.2rem); line-height: 1.2; letter-spacing: -.02em; }
-
-  .bento { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .feature-card {
-    overflow: hidden; min-height: 150px; padding: 19px 18px; border-radius: 20px;
-    -webkit-backdrop-filter: none; backdrop-filter: none;
-  }
-  .feature-card::after {
-    content: ""; position: absolute; width: 96px; height: 96px; right: -45px; bottom: -55px;
-    border-radius: 50%; background: var(--card-glow, rgba(79,195,247,.10)); filter: blur(18px); pointer-events: none;
-  }
-  .feature-top { display: flex; align-items: center; gap: 11px; }
-  .feature-icon {
-    width: 38px; height: 38px; flex: none; display: grid; place-items: center;
-    border: 1px solid rgba(255,255,255,.15); border-radius: 12px;
-    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.015)), rgba(79,195,247,.08);
-    color: var(--blue); box-shadow: inset 0 1px 0 rgba(255,255,255,.11);
-  }
-  .feature-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-  .feature-card h3 { font-size: 1.02rem; }
-  .feature-card p { margin-top: 12px; color: var(--muted); font-size: .89rem; }
-  .feature-card.accent-orange { --card-glow: rgba(255,183,77,.10); }
-  .feature-card.accent-orange .feature-icon { color: var(--orange); background-color: rgba(255,183,77,.07); }
-  .feature-card.accent-purple { --card-glow: rgba(171,71,188,.12); }
-  .feature-card.accent-purple .feature-icon { color: #ce86dd; background-color: rgba(171,71,188,.08); }
-
-  .connection-panel { border-radius: var(--radius); padding: 22px 16px; }
-  .start-node {
-    width: fit-content; margin: 0 auto 18px; padding: 9px 14px; border-radius: 999px;
-    border: 1px solid rgba(79,195,247,.30); background: var(--blue-soft); color: #d9f4ff; font-weight: 700; font-size: .9rem;
-  }
-  .connection-line { width: 1px; height: 18px; margin: -18px auto 0; background: linear-gradient(var(--blue), transparent); opacity: .7; }
-  .connection-modes { margin-top: 0; display: grid; grid-template-columns: 1fr; gap: 10px; }
-  .mode-card { padding: 17px 16px; border: 1px solid rgba(255,255,255,.10); border-radius: 17px; background: rgba(255,255,255,.025); }
-  .mode-card b { display: flex; align-items: center; gap: 8px; font-size: .98rem; }
-  .mode-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 12px rgba(79,195,247,.6); }
-  .mode-card:nth-child(2) .mode-dot { background: var(--orange); box-shadow: 0 0 12px rgba(255,183,77,.5); }
-  .mode-card p { margin-top: 6px; color: var(--muted); font-size: .86rem; }
-
-  .remote-panel { overflow: hidden; border-radius: var(--radius); padding: 22px 17px; }
-  .remote-panel::after {
-    content: ""; position: absolute; inset: auto -90px -120px auto; width: 260px; height: 260px;
-    border-radius: 50%; background: rgba(171,71,188,.11); filter: blur(36px); pointer-events: none;
-  }
-  .viewfinder {
-    position: relative; z-index: 1; aspect-ratio: 16/10; overflow: hidden; border-radius: 16px;
-    border: 1px solid rgba(255,255,255,.15);
-    background:
-      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
-      radial-gradient(circle at 62% 40%, rgba(79,195,247,.19), transparent 30%),
-      linear-gradient(145deg, #20282d, #111516);
-    background-size: 33.333% 33.333%, 33.333% 33.333%, auto, auto;
-  }
-  .focus-box { position: absolute; width: 46px; height: 34px; left: 54%; top: 38%; border: 1px solid var(--green); border-radius: 4px; box-shadow: 0 0 12px rgba(76,175,80,.24); animation: focus-breathe 2.6s ease-in-out infinite; }
-  @keyframes focus-breathe { 50% { transform: scale(.92); opacity: .68; } }
-  .viewfinder-status { position: absolute; left: 10px; top: 9px; color: #dff7e1; font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; }
-  .viewfinder-exif { position: absolute; left: 10px; right: 10px; bottom: 8px; display: flex; justify-content: space-between; color: rgba(255,255,255,.70); font-family: var(--mono); font-size: .6rem; }
-  .remote-copy { position: relative; z-index: 1; margin-top: 20px; }
-  .remote-copy h3 { font-size: 1.18rem; }
-  .remote-copy p { margin-top: 8px; color: var(--muted); font-size: .89rem; }
-  .tool-chips { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 7px; }
-  .tool-chip { padding: 6px 9px; border: 1px solid rgba(255,255,255,.10); border-radius: 999px; background: rgba(255,255,255,.025); color: #c6cbd0; font-size: .72rem; }
-  .remote-note { margin-top: 12px !important; color: #7e878e !important; font-size: .75rem !important; }
-
-  .table-wrap { overflow: hidden; border-radius: var(--radius); }
-  table { width: 100%; table-layout: fixed; border-collapse: collapse; }
-  th, td { padding: 11px 3px; border-bottom: 1px solid rgba(255,255,255,.08); text-align: center; font-size: .72rem; line-height: 1.35; overflow-wrap: anywhere; }
-  th { color: #818990; font-size: .67rem; font-weight: 600; }
-  th:first-child, td:first-child { width: 31%; padding-left: 10px; text-align: left; color: #c9cdd1; }
-  td.plan { color: #9edffb; font-weight: 650; }
-  tr:last-child td { border-bottom: 0; }
-
-  .download-panel { border-radius: var(--radius); padding: 30px 17px; text-align: center; }
-  .download-panel .primary-button { margin-top: 20px; }
-  .download-meta { margin-top: 13px; color: #828a90; font-family: var(--mono); font-size: .67rem; letter-spacing: .055em; }
-  .download-alt { margin-top: 15px; color: var(--muted); font-size: .82rem; }
-
-  footer { margin-top: 62px; padding: 28px 16px 36px; border-top: 1px solid rgba(255,255,255,.07); color: #7f878d; text-align: center; font-size: .78rem; }
-  .footer-icp { margin-top: 8px; }
-  .footer-icp a { display: inline-block; padding: 4px 2px; color: var(--muted); text-underline-offset: 3px; }
-  .footer-icp a:hover, .footer-icp a:focus-visible { color: var(--text); }
-
-  .motion-ready .reveal { opacity: 0; transform: translateY(18px) scale(.992); }
-  .motion-ready .reveal.visible {
-    opacity: 1; transform: none;
-    transition: opacity .65s ease var(--reveal-delay, 0s), transform .65s cubic-bezier(.2,.75,.25,1) var(--reveal-delay, 0s);
-  }
-  .bento .reveal:nth-child(2) { --reveal-delay: .04s; }
-  .bento .reveal:nth-child(3) { --reveal-delay: .08s; }
-  .bento .reveal:nth-child(4) { --reveal-delay: .12s; }
-  .bento .reveal:nth-child(5) { --reveal-delay: .16s; }
-  .bento .reveal:nth-child(6) { --reveal-delay: .20s; }
-  .bento .reveal:nth-child(7) { --reveal-delay: .24s; }
-
-  @media (hover: hover) {
-    .nav-links a:hover { color: var(--text); }
-    .primary-button:hover { transform: translateY(-2px); border-color: rgba(126,215,255,.45); background-color: rgba(46,65,78,.68); }
-    .feature-card { transition: transform .22s ease, border-color .22s ease; }
-    .feature-card:hover { transform: translateY(-3px); border-color: rgba(126,215,255,.25); }
-  }
-
-  @media (min-width: 700px) {
-    .shell { padding: 0 24px; }
-    .nav-inner { height: 64px; }
-    .nav-links { display: flex; }
-    .nav-download { margin-left: 8px; }
-    .hero { padding: 38px 24px 72px; }
-    .hero-panel { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 34px; padding: 48px 50px; }
-    .hero-copy { text-align: left; }
-    .hero-text { margin-left: 0; }
-    .hero-action { display: flex; }
-    .primary-button { width: auto; min-width: 180px; }
-    .facts { justify-content: flex-start; }
-    .device-stage { height: 310px; margin-top: 0; }
-    .camera-unit { width: 112px; height: 82px; border-radius: 19px; }
-    .camera-top { width: 32px; height: 11px; left: 24px; }
-    .lens { width: 53px; height: 53px; left: 30px; top: 14px; }
-    .phone-unit { width: 54px; height: 100px; border-radius: 14px; }
-    .link-track { min-width: 120px; }
-    section { padding-top: 90px; }
-    .section-head { margin-bottom: 32px; }
-    .bento { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
-    .feature-card { min-height: 164px; padding: 22px; }
-    .feature-card.wide { grid-column: 1 / -1; min-height: 145px; }
-    .connection-panel { padding: 30px; }
-    .connection-modes { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .remote-panel { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 34px; padding: 32px; }
-    .remote-copy { margin-top: 0; }
-    th, td { padding: 15px 10px; font-size: .9rem; }
-    th { font-size: .79rem; }
-    th:first-child, td:first-child { padding-left: 20px; }
-    .download-panel { padding: 46px 24px; }
-    .download-panel .primary-button { display: flex; width: fit-content; margin-right: auto; margin-left: auto; }
-  }
-
-  @media (min-width: 980px) {
-    .bento { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .feature-card.wide { grid-column: span 2; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .motion-ready .reveal { opacity: 1; transform: none; }
-  }
-.ios-policy-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;margin-top:14px}.ios-policy-links a{color:inherit;text-underline-offset:3px}.ios-policy-draft{margin-top:8px;color:#ffb74d}
-</style>
+<link rel="preload" as="image" href="assets/alpine-dawn.webp" fetchpriority="high">
+<link rel="stylesheet" href="styles.css?v=20261022b">
+<script src="app.js?v=20261022b" defer></script>
+<noscript><style>.workflow-tabs,.connection-options,.effect-controls,.compare-label,.compare-range,.monitor-bottom button,.focus-target,.menu-toggle,.copy-contact span{display:none!important}.workflow-panel[hidden]{display:grid!important;margin-top:24px}.connection-panel[hidden]{display:block!important;margin-top:20px}.nav-links{display:none!important}</style></noscript>
 </head>
 <body>
-<div class="ambient" aria-hidden="true"></div>
-
-<nav>
-  <div class="shell nav-inner">
-    <svg class="logo" viewBox="21 21 66 66" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="21" y="21" width="66" height="66" rx="12" fill="#20262A"/>
-      <path fill="#F4F7F8" d="M39.56,35 L63.12,35 L61.64,39.94 L35.34,68.06 L53.2,68.06 L51.72,73 L28.16,73 L29.64,68.06 L55.94,39.94 L38.08,39.94 Z"/>
-      <path fill="#20262A" stroke="#20262A" stroke-width="4.6" stroke-linejoin="round" d="M56.28,35 L79.84,35 L78.36,39.94 L52.06,68.06 L69.92,68.06 L68.44,73 L44.88,73 L46.36,68.06 L72.66,39.94 L54.8,39.94 Z"/>
-      <path fill="#7ED7FF" d="M56.28,35 L79.84,35 L78.36,39.94 L52.06,68.06 L69.92,68.06 L68.44,73 L44.88,73 L46.36,68.06 L72.66,39.94 L54.8,39.94 Z"/>
-    </svg>
-    <span class="brand">ZTransfer · Z传</span>
-    <div class="nav-links">
-      <a href="#features">功能</a>
-      <a href="#connection">连接</a>
-      <a href="#versions">权益</a>
-    </div>
-    <a class="nav-download" href="#download">下载 APK</a>
-  </div>
-</nav>
-
-<header class="hero shell">
-  <div class="hero-panel glass reveal">
-    <div class="hero-copy">
-      <p class="eyebrow">Nikon · Android</p>
-      <h1>从相机，<br><span>到手机。</span></h1>
-      <p class="hero-text">把尼康相机的浏览、传输、预览与遥控，放进安卓手机。</p>
-      <div class="hero-action">
-        <a class="primary-button" href="#download">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
-          下载 Z传
-        </a>
-      </div>
-      <div class="facts">
-        <span class="fact">WI-FI / USB-C</span>
-        <span class="fact">NEF / JPEG / VIDEO</span>
-        <span class="fact">ANDROID 8+</span>
-      </div>
-    </div>
-
-    <div class="device-stage" aria-hidden="true">
-      <div class="stage-glow"></div>
-      <div class="device-row">
-        <div class="camera-unit"><i class="camera-top"></i><i class="lens"></i><i class="camera-light"></i></div>
-        <div class="link-track" id="linkTrack">
-          <i class="packet"></i><i class="packet"></i><i class="packet"></i>
-          <span class="mode-badge">WI-FI · USB</span>
-        </div>
-        <div class="phone-unit"><div class="phone-screen"><i></i><i></i><i></i><i></i></div></div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main>
-  <section class="shell" id="features">
-    <div class="section-head reveal">
-      <p class="eyebrow">Features</p>
-      <h2>一条完整的影像链路</h2>
-    </div>
-    <div class="bento">
-      <article class="feature-card glass reveal">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 8a12 12 0 0 1 16 0M7 12a8 8 0 0 1 10 0M10 16a3 3 0 0 1 4 0"/></svg></span><h3>Wi-Fi 与 USB-C</h3></div>
-        <p>相机热点无线连接，或 C to C 数据线有线连接。</p>
-      </article>
-
-      <article class="feature-card glass reveal accent-orange">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 15l5-5 4 4 3-3 4 4"/><circle cx="16" cy="9" r="1"/></svg></span><h3>原文件与大视频</h3></div>
-        <p>传输 NEF、JPEG 与机内视频；分块处理 4GB 以上大文件。</p>
-      </article>
-
-      <article class="feature-card glass reveal">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/><path d="M18 6a8 8 0 0 0-12 1"/></svg></span><h3>可靠传输队列</h3></div>
-        <p>实时进度、速度与耗时；断线后可续传，失败任务可重试。</p>
-      </article>
-
-      <article class="feature-card glass reveal accent-purple">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="17" r="3"/><path d="M18 15.5v3M16.5 17h3"/></svg></span><h3>新片与连拍整理</h3></div>
-        <p>自动发现新拍照片；按日期分组，自动识别连拍并保留机内保护标记。</p>
-      </article>
-
-      <article class="feature-card glass reveal">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/><circle cx="18" cy="6" r="2"/><circle cx="7" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></svg></span><h3>组合筛选</h3></div>
-        <p>文件类型、未传、保护、连拍、存储卡和拍摄日期可叠加筛选。</p>
-      </article>
-
-      <article class="feature-card glass reveal accent-orange">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM8 21h8M12 19v2"/><path d="M7 15l3-3 2 2 3-4 2 3"/></svg></span><h3>高清预览</h3></div>
-        <p>FHD 大图支持缩放与旋转，并显示光圈、快门、ISO 与焦距。</p>
-      </article>
-
-      <article class="feature-card glass reveal wide">
-        <div class="feature-top"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg></span><h3>滤镜、边框与水印</h3></div>
-        <p>滤镜强度、边框样式、文字或 Logo 水印均可调整；效果图另存，原始文件不变。</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="shell" id="connection">
-    <div class="section-head reveal">
-      <p class="eyebrow">Connection</p>
-      <h2>连接方式</h2>
-    </div>
-    <div class="connection-panel glass reveal">
-      <div class="start-node">01 · 打开 Z传</div>
-      <div class="connection-line"></div>
-      <div class="connection-modes">
-        <div class="mode-card"><b><i class="mode-dot"></i>02 · Wi-Fi</b><p>连接相机热点</p></div>
-        <div class="mode-card"><b><i class="mode-dot"></i>02 · USB-C</b><p>连接 C to C 数据线</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="shell" id="remote">
-    <div class="section-head reveal">
-      <p class="eyebrow">Remote</p>
-      <h2>监看与遥控</h2>
-    </div>
-    <div class="remote-panel glass reveal">
-      <div class="viewfinder" aria-hidden="true">
-        <span class="viewfinder-status">● LIVE</span>
-        <i class="focus-box"></i>
-        <div class="viewfinder-exif"><span>S 1/250</span><span>f 2.8</span><span>ISO 100</span><span>EV 0.0</span></div>
-      </div>
-      <div class="remote-copy">
-        <h3>手机就是监看屏</h3>
-        <p>实时取景、点按对焦，调节快门、光圈、ISO 与曝光补偿，并控制拍照和录像。</p>
-        <div class="tool-chips">
-          <span class="tool-chip">高清 / 全屏</span><span class="tool-chip">直方图</span><span class="tool-chip">构图线</span>
-          <span class="tool-chip">斑马纹</span><span class="tool-chip">水平仪</span><span class="tool-chip">端侧录制</span>
-        </div>
-        <p class="remote-note">可用控制随相机能力呈现。</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="shell" id="versions">
-    <div class="section-head reveal">
-      <p class="eyebrow">Versions</p>
-      <h2>版本权益</h2>
-    </div>
-    <div class="table-wrap glass reveal">
-      <table>
-        <thead><tr><th>功能</th><th>免费版</th><th>年费版</th><th>永久版</th></tr></thead>
-        <tbody>
-          <tr><td>每日传输</td><td>25 个</td><td class="plan">不限数量</td><td class="plan">不限数量</td></tr>
-          <tr><td>单文件大小</td><td>≤ 400 MB</td><td class="plan">不限大小</td><td class="plan">不限大小</td></tr>
-          <tr><td>遥控 · 监看</td><td>3 分钟/天</td><td class="plan">不限时</td><td class="plan">不限时</td></tr>
-          <tr><td>端侧录制</td><td>不可用</td><td class="plan">可用</td><td class="plan">可用</td></tr>
-          <tr><td>边框与水印</td><td>默认水印</td><td class="plan">自由定制</td><td class="plan">自由定制</td></tr>
-          <tr><td>权益时间</td><td>长期免费</td><td class="plan">365 天</td><td class="plan">永久</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section class="shell" id="download">
-    <div class="download-panel glass reveal">
-      <p class="eyebrow">Download</p>
-      <h2>下载 Z传</h2>
-      <a class="primary-button" href="https://apk.ztransfer.top/ZTransfer.apk">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
-        下载 APK
-      </a>
-      <p class="download-meta">ANDROID 8+ · APK</p>
-      <p class="download-alt">下载异常时，可添加 QQ <b>953000922</b> 获取安装包。</p>
-    </div>
-  </section>
+<a class="skip-link" href="#main">跳转到主要内容</a>
+<svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0m-9 4a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r=".5"/></symbol>
+<symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m3 16 6-6 5 5 3-3 4 4"/><circle cx="16" cy="8" r="1"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></symbol>
+</svg>
+<header class="site-header"><nav class="nav wrap" aria-label="主导航">
+<a class="brand" href="#" aria-label="Z传，返回首页"><img src="icon-320.png" width="34" height="34" alt=""><span>Z传 <small>ZTRANSFER</small></span></a>
+<div class="nav-links" id="nav-links"><a href="#workflow">探索功能</a><a href="#connect">连接方式</a><a href="#plans">版本权益</a><a href="#faq">常见问题</a></div>
+<a class="nav-cta" href="#download">免费下载 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+<button class="menu-toggle" type="button" aria-label="打开导航" aria-controls="nav-links" aria-expanded="false"><span></span><span></span></button>
+</nav></header>
+<main id="main">
+<section class="hero" aria-labelledby="hero-title">
+<div class="hero-art" aria-hidden="true"><img src="assets/alpine-dawn.webp" alt="" width="1600" height="901" fetchpriority="high"><div class="hero-art-shade"></div></div>
+<div class="hero-content wrap"><div class="hero-copy">
+<p class="eyebrow hero-eyebrow"><span class="status-dot"></span> 为尼康摄影而生 <span class="eyebrow-divider">/</span> ANDROID</p>
+<h1 id="hero-title">好照片，<br><em>现在就带走。</em></h1>
+<p class="hero-description">从尼康相机，到安卓手机。<br>传原片、选好片、做效果。<br class="mobile-break">让拍摄之后的每一步，都顺手。</p>
+<div class="hero-actions"><a class="button button-lime" href="https://apk.ztransfer.top/ZTransfer.apk"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> 免费下载 Android 版</a><a class="text-link" href="#workflow">探索 Z传 <span>↘</span></a></div>
+<p class="hero-meta">Android 8.0 及以上 <span>·</span> 免费开始体验</p></div>
+<div class="hero-proof" aria-label="原片传输概念演示"><div class="proof-top"><svg class="icon" aria-hidden="true"><use href="#i-photo"/></svg><span>把这一刻，带在身边</span><span class="proof-state">原片传输</span></div><div class="proof-file"><span class="raw-icon">NEF</span><div><b>山间的第一束光</b><small>保留原始文件 · 留住创作空间</small></div><span class="check-disc"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span></div><div class="proof-track"><span></span></div><p>功能示意 <span>CAMERA → PHONE</span></p></div>
+</div><div class="hero-bottom wrap"><span>LESS WAITING. MORE CREATING.</span><a href="#workflow" aria-label="向下探索功能">向下探索 <span>↓</span></a></div>
+</section>
+<div class="capability-strip"><div class="wrap"><span>让相机与手机，<strong>默契配合。</strong></span><div><b>Wi-Fi <i>/</i> USB</b><b>NEF <i>/</i> JPEG <i>/</i> VIDEO</b><b>选片 <i>·</i> 传输 <i>·</i> 创作</b></div></div></div>
+<section class="workflow section-light" id="workflow"><div class="wrap">
+<div class="section-heading reveal"><div><p class="eyebrow">01 / 拍摄之后，也要尽兴</p><h2>从相机里的好照片，<br>到你手里的好作品。</h2></div><p class="section-intro">拍摄的兴奋，不该被繁琐的步骤打断。<br>Z传把选片、传输与照片效果连在一起，<br>让灵感继续往前走。</p></div>
+<div class="workflow-tabs" role="tablist" aria-label="探索工作流程">
+<button id="tab-select" role="tab" aria-selected="true" aria-controls="panel-select" tabindex="0"><span>01</span><b>选得轻松</b><small>找到值得留下的那一张</small></button>
+<button id="tab-transfer" role="tab" aria-selected="false" aria-controls="panel-transfer" tabindex="-1"><span>02</span><b>传得明白</b><small>原片与视频，心里有数</small></button>
+<button id="tab-create" role="tab" aria-selected="false" aria-controls="panel-create" tabindex="-1"><span>03</span><b>做出风格</b><small>把照片变成自己的作品</small></button></div>
+<div class="workflow-panels reveal">
+<div class="workflow-panel" id="panel-select" role="tabpanel" aria-labelledby="tab-select" tabindex="0">
+<div class="gallery-demo" aria-label="照片筛选功能示意"><div class="demo-toolbar"><span><i class="status-dot"></i> 相机照片</span><span class="demo-counter">JPEG / NEF</span></div><div class="filter-chips"><span class="is-active">全部照片</span><span>未传输</span><span>拍摄日期</span><span>连拍</span></div><div class="contact-sheet">
+<div class="contact-image crop-one"><img src="assets/alpine-dawn-small.webp" alt="山峰与湖泊的选片示意" width="700" height="394" loading="lazy"><span>NEF</span></div>
+<div class="contact-image crop-two"><img src="assets/alpine-dawn-small.webp" alt="湖泊局部的选片示意" width="700" height="394" loading="lazy"><span>JPEG</span></div>
+<div class="contact-image crop-three"><img src="assets/alpine-dawn-small.webp" alt="山林局部的选片示意" width="700" height="394" loading="lazy"><span>NEF</span></div>
+<div class="contact-image crop-four"><img src="assets/alpine-dawn-small.webp" alt="山间光线的选片示意" width="700" height="394" loading="lazy"><span>JPEG</span><i>✓</i></div>
+<div class="contact-image crop-five"><img src="assets/alpine-dawn-small.webp" alt="雪山局部的选片示意" width="700" height="394" loading="lazy"><span>NEF</span><i>✓</i></div>
+<div class="contact-image crop-six"><img src="assets/alpine-dawn-small.webp" alt="湖岸局部的选片示意" width="700" height="394" loading="lazy"><span>JPEG</span></div></div><p class="demo-caption">功能示意 · 非 App 截图</p></div>
+<div class="workflow-copy"><span class="section-number">01 — SELECT</span><h3>拍了很多，<br>挑喜欢的就好。</h3><p>按日期、类型、未传状态与连拍组合筛选。打开高清预览，放大看细节，再决定把哪张带走。</p><ul class="check-list"><li>按拍摄日期整理，连拍成组浏览</li><li>多条件筛选，减少来回翻找</li><li>预览照片，同时查看拍摄参数</li></ul></div></div>
+<div class="workflow-panel" id="panel-transfer" role="tabpanel" aria-labelledby="tab-transfer" tabindex="0">
+<div class="transfer-demo"><div class="demo-toolbar"><span><i class="status-dot"></i> 传输队列</span><span class="demo-counter">功能示意</span></div><div class="queue-item"><span class="file-type">NEF</span><div><b>原片，完整保留</b><small>留给后期更多空间</small></div><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></div><div class="queue-item"><span class="file-type">JPG</span><div><b>照片，随身带走</b><small>在手机上继续查看与创作</small></div><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></div><div class="queue-item queue-video"><span class="file-type">MOV</span><div><b>视频，接着传</b><small>支持大视频分块与断点续传</small><div class="queue-progress"><span></span></div></div><span class="queue-arrow">↓</span></div><div class="transfer-footer"><span>进度清晰可见</span><span>失败任务可重试 ↗</span></div></div>
+<div class="workflow-copy"><span class="section-number">02 — TRANSFER</span><h3>珍贵的原片，<br>值得完整带走。</h3><p>NEF、JPEG 和机内视频，按需要加入队列。也可开启自动传输，让新拍内容自动加入。进度、速度、耗时，一目了然。</p><ul class="check-list"><li>直接传输原文件，保留原始内容</li><li>支持 4GB 以上大视频分块传输</li><li>视频可断点续传，照片失败可重传</li></ul><p class="fine-print">大文件能力取决于相机、连接方式与手机存储条件。</p></div></div>
+<div class="workflow-panel" id="panel-create" role="tabpanel" aria-labelledby="tab-create" tabindex="0">
+<div class="print-demo"><div class="photo-print"><img src="assets/alpine-dawn-small.webp" alt="带留白边框的山湖照片效果示意" width="700" height="394" loading="lazy"><div><b>INTO THE QUIET.</b><span>给风景，留一点呼吸。</span></div></div><p class="demo-caption">照片效果示意 · 非 App 截图</p></div>
+<div class="workflow-copy"><span class="section-number">03 — CREATE</span><h3>同一张照片，<br>有你的表达。</h3><p>为 JPEG 选择滤镜或 LUT，搭配边框。高级版还可定制文字或 Logo 水印，让作品带上你的印记。</p><ul class="check-list"><li>滤镜强度可调，风格由你拿捏</li><li>边框与水印，为作品补上最后一笔</li><li>效果图单独保存，原始文件保持不变</li></ul></div></div>
+</div></div></section>
+<section class="effects section-light" id="effects"><div class="wrap effects-layout">
+<div class="effects-copy reveal"><p class="eyebrow">不只传过来，更想分享出去</p><h2>好风景，<br>也有你的色彩。</h2><p>一点色调，一圈留白，一枚自己的印记。<br>从原片到作品，不必打断创作的心情。</p><div class="effect-controls" role="group" aria-label="选择网页示意风格"><button class="effect-preset is-active" data-look="warm" aria-pressed="true">暖调</button><button class="effect-preset" data-look="mono" aria-pressed="false">黑白</button><button class="effect-preset" data-look="forest" aria-pressed="false">森绿</button></div><label class="compare-label" for="compare-slider">拖动对比，感受风格变化 <span>↔</span></label><input id="compare-slider" class="compare-range" type="range" min="0" max="100" value="54" aria-label="照片风格对比位置"><p class="fine-print">网页调色示意，并非 App 内滤镜的精确还原。<br>App 照片效果适用于 JPG / JPEG，原文件保留。</p></div>
+<div class="comparison reveal" data-look="warm" style="--split:54%"><img src="assets/alpine-dawn-small.webp" alt="山湖照片，原始示意色调" width="700" height="394" loading="lazy"><div class="comparison-after"><img src="assets/alpine-dawn-small.webp" alt="山湖照片，调整色调后的示意" width="700" height="394" loading="lazy"></div><span class="compare-tag tag-before">原图示意</span><span class="compare-tag tag-after">暖调示意</span><div class="compare-divider" aria-hidden="true"><span>↔</span></div></div>
+</div></section>
+<section class="connection section-dark" id="connect"><div class="wrap">
+<div class="section-heading reveal"><div><p class="eyebrow">02 / 连接，为你的场景而选</p><h2>轻装出门。<br>或是，稳稳接上。</h2></div><p class="section-intro">在外随拍，用 Wi-Fi 少一根线。<br>坐下来整理素材，用 USB 直接连接。<br>找到适合此刻的方式。</p></div>
+<div class="connection-layout reveal"><div class="connection-options" role="tablist" aria-label="连接方式" aria-orientation="vertical">
+<button role="tab" id="connect-ap" aria-controls="connect-panel-ap" aria-selected="true" tabindex="0"><span class="connection-index">01</span><div><b>相机热点 <small>Wi-Fi / AP</small></b><p>手机连接相机的 Wi-Fi，出门拍摄更轻便。</p></div><span class="option-arrow">↗</span></button>
+<button role="tab" id="connect-usb" aria-controls="connect-panel-usb" aria-selected="false" tabindex="-1"><span class="connection-index">02</span><div><b>有线直连 <small>USB</small></b><p>用支持数据传输的 USB 线，连接手机与相机。</p></div><span class="option-arrow">↗</span></button>
+<button role="tab" id="connect-sta" aria-controls="connect-panel-sta" aria-selected="false" tabindex="-1"><span class="connection-index">03</span><div><b>同一网络 <small>Wi-Fi / STA</small></b><p>通过相机“连接到计算机”流程，接入同一网络。</p></div><span class="option-arrow">↗</span></button>
+</div><div class="connection-visual"><div class="connection-drawing" aria-hidden="true"><div class="camera-outline"><div class="camera-hump"></div><div class="camera-dial"></div><span>Z</span><div class="camera-lens"><div></div></div><i></i></div><div class="connection-beam"><span></span><span></span><span></span><svg class="icon"><use href="#i-wifi"/></svg></div><div class="phone-outline"><i></i><img src="icon-320.png" alt="" width="40" height="40"><span>Z传</span></div></div>
+<div id="connect-panel-ap" class="connection-panel" role="tabpanel" aria-labelledby="connect-ap" tabindex="0"><span class="connection-pill">相机 → 手机</span><h3>少一根线，多一点自由。</h3><p>开启相机 Wi-Fi，在手机系统设置中连接相机热点，再回到 Z传开始连接。</p></div>
+<div id="connect-panel-usb" class="connection-panel" role="tabpanel" aria-labelledby="connect-usb" tabindex="0"><span class="connection-pill">相机 ━ 手机</span><h3>一根数据线，直接进入状态。</h3><p>使用支持数据传输的线材连接，按提示授予 USB 访问权限。手机需支持 USB Host / OTG。</p></div>
+<div id="connect-panel-sta" class="connection-panel" role="tabpanel" aria-labelledby="connect-sta" tabindex="0"><span class="connection-pill">相机 → 同一网络 ← 手机</span><h3>在熟悉的网络里，继续拍摄。</h3><p>让相机与手机进入同一 Wi-Fi，或让相机接入手机热点。选择相机“连接到计算机”并完成配对。</p></div>
+</div></div><p class="connection-note">具体连接与功能支持取决于相机型号、固件及手机。建议先用免费版确认设备兼容性。</p></div></section>
+<section class="remote section-dark" id="remote"><div class="wrap">
+<div class="section-heading reveal"><div><p class="eyebrow">03 / 换一个视角，掌握画面</p><h2>手机，也是你的<br><span class="lime-text">另一块取景屏。</span></h2></div><div class="section-intro"><p>实时监看、点按对焦，调整曝光参数。<br>不守在相机背后，也能照顾每个细节。</p><p class="fine-print">可用控制随相机能力与连接方式呈现。</p></div></div>
+<div class="monitor reveal"><div class="monitor-top"><span><i class="status-dot"></i> LIVE VIEW</span><span>监看交互示意</span><span class="monitor-brand">ZTRANSFER</span></div><div class="monitor-screen" id="monitor-screen"><img src="assets/alpine-dawn.webp" alt="山湖风景的监看示意，可点击画面移动对焦框" width="1600" height="901" loading="lazy"><div class="monitor-grid" aria-hidden="true"></div><button class="focus-target" type="button" aria-label="移动示意对焦框到下一个位置"><span></span></button><div class="monitor-corners" aria-hidden="true"></div><span class="monitor-live"><i></i> 实时取景</span><span class="monitor-hint">点击画面，试试对焦</span><div class="monitor-histogram" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="monitor-exif"><span><small>快门</small>1/250</span><span><small>光圈</small>F 2.8</span><span><small>感光度</small>ISO 100</span><span><small>曝光补偿</small>± 0.0</span></div></div><div class="monitor-bottom"><p>构图、曝光、焦点，心里都有数。</p><div><button id="toggle-grid" type="button" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>构图线</button><button id="toggle-info" type="button" aria-pressed="true">辅助信息</button></div></div></div>
+<div class="remote-features"><div><span>01</span><h3>把构图看清楚</h3><p>高清与全屏预览，搭配构图线，照顾画面的每个角落。</p></div><div><span>02</span><h3>让曝光更有把握</h3><p>直方图、斑马纹、水平仪，为现场判断多添一份依据。</p></div><div><span>03</span><h3>把控制握在手里</h3><p>对焦、曝光调整、拍照与录像，让手机成为相机的延伸。</p></div></div></div></section>
+<section class="plans section-light" id="plans"><div class="wrap">
+<div class="section-heading reveal"><div><p class="eyebrow">04 / 先体验，再决定</p><h2>从一次轻松传图开始。</h2></div><p class="section-intro">先确认你的设备好用、你的流程顺手。<br>需要更多，再在 App 内升级高级版。</p></div>
+<div class="plans-grid reveal"><article class="plan-card"><div class="plan-title"><span>FREE</span><span>日常体验</span></div><h3>免费版</h3><p>先把相机连起来，让好照片来到手机上。</p><div class="plan-highlight"><strong>25 <small>个 / 天</small></strong><span>每日文件传输额度</span></div><ul class="check-list"><li>单个文件不超过 400 MB</li><li>遥控与监看每天 5 分钟</li><li>照片筛选、预览、滤镜与边框</li><li>效果图使用默认水印</li></ul><a href="https://apk.ztransfer.top/ZTransfer.apk" class="button button-outline">免费下载体验 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
+<article class="plan-card plan-pro"><div class="plan-title"><span>ZTRANSFER PRO</span><span class="plan-badge">专注创作</span></div><h3>高级版</h3><p>为更多照片、更大素材和更长拍摄做好准备。</p><div class="plan-highlight"><strong>尽兴拍，尽情传。</strong><span>解除免费版的数量、单文件大小与监看时长限制</span></div><ul class="check-list"><li>传输数量与单文件大小不限额度</li><li>遥控与监看不限时，可将监看画面录到手机</li><li>自定义文字与 Logo 水印</li><li>可选年费版或永久版</li></ul><a href="#download" class="button button-dark">下载后在 App 内了解 <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><p class="fine-print">价格与权益时间以 App 内展示为准；实际能力受设备条件影响。</p></article></div></div></section>
+<section class="faq section-light" id="faq"><div class="wrap faq-layout"><div class="reveal"><p class="eyebrow">下载前，你可能想知道</p><h2>把疑问，<br>留在开始之前。</h2><p class="faq-contact">还有问题？<br>通过 QQ <a href="#download">953000922</a> 联系我们。</p></div><div class="faq-list">
+<details open><summary>我的相机和手机可以用吗？<span>+</span></summary><div><p>Z传面向尼康相机与 Android 8.0 及以上手机。不同机型、固件和连接方式支持的功能可能不同，并非所有尼康相机均已验证。建议先下载免费版，连接自己的设备试用。USB 连接还需要手机支持 USB Host / OTG，并使用可传输数据的线材。</p></div></details>
+<details><summary>传过来的，是原始文件吗？<span>+</span></summary><div><p>原文件传输会保留相机中的 NEF、JPEG 或视频内容。为 JPEG 应用滤镜、裁切、边框等照片效果时，效果图会单独生成，原始文件保持不变。RAW 和视频不应用这些照片效果。</p></div></details>
+<details><summary>传输中断了，需要从头开始吗？<span>+</span></summary><div><p>视频支持断点续传；照片传输失败后可重新传输。恢复连接后，可在队列中处理失败任务。具体恢复能力取决于文件、相机与连接状态。</p></div></details>
+<details><summary>免费版能做什么？需要先付费吗？<span>+</span></summary><div><p>可以先免费体验：每日传输 25 个文件，单个不超过 400 MB；遥控与监看每日 5 分钟；支持照片筛选、预览、滤镜与边框。更大的传输需求、不限时监看、手机端监看录制和自定义水印，可在 App 内了解高级版。</p></div></details>
+<details><summary>下载后怎样安装？<span>+</span></summary><div><p>用安卓手机打开本站，点击下载 Android 安装包。下载完成后打开 APK，按系统提示允许当前浏览器或文件管理器安装应用，再完成安装。如果下载遇到问题，可添加 QQ 953000922 获取帮助。</p></div></details>
+<details><summary>Z传是尼康官方应用吗？<span>+</span></summary><div><p>不是。Z传是一款独立开发的相机工具，非尼康官方产品，与尼康公司不存在官方隶属或背书关系。</p></div></details>
+</div></div></section>
+<section class="download" id="download"><div class="wrap download-layout"><div><p class="eyebrow">下一张好照片，别让它等太久。</p><h2>去拍摄。<br>剩下的，交给 Z传。</h2><div class="download-actions"><a class="button button-dark" href="https://apk.ztransfer.top/ZTransfer.apk"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> 免费下载 Android 版</a><span>Android 8.0+<br>官方 APK 安装包</span></div><p class="download-help">下载遇到问题？联系 QQ <button class="copy-contact" type="button" data-copy="953000922" aria-label="复制 QQ 号 953000922">953000922 <span>复制 ↗</span></button><span class="copy-status" role="status" aria-live="polite"></span></p></div><div class="download-mark" aria-hidden="true"><img src="icon-320.png" width="170" height="170" alt=""><span>YOUR CAMERA.<br>YOUR PHOTOS.<br>YOUR WAY.</span></div></div></section>
 </main>
-
-<footer>
-  ZTransfer（Z传）· 尼康相机传图工具 · 非尼康官方产品<br>
-  QQ 953000922
-<p class="ios-policy-links"><a href="ios/privacy/">iOS 隐私政策</a><a href="ios/terms/">iOS 使用条款</a><a href="ios/support/">iOS 帮助与支持</a></p>
-  <p class="footer-icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">辽ICP备2025050413号-2</a></p>
-</footer>
-
-<script>
-  var track = document.getElementById('linkTrack');
-  function updateTrackWidth() {
-    if (track) track.style.setProperty('--track-width', track.offsetWidth + 'px');
-  }
-  updateTrackWidth();
-  addEventListener('resize', updateTrackWidth, { passive: true });
-
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.body.classList.add('motion-ready');
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -24px' });
-    document.querySelectorAll('.reveal').forEach(function (element) { observer.observe(element); });
-  }
-</script>
+<footer class="footer"><div class="wrap"><div class="footer-top"><a class="brand" href="#"><img src="icon-320.png" width="30" height="30" alt=""><span>Z传 <small>ZTRANSFER</small></span></a><p>让摄影的快乐，延续到快门之后。</p><a href="#" class="back-top">返回顶部 ↑</a></div><div class="footer-bottom"><p>© <span id="year">2026</span> ZTransfer · 非尼康官方产品</p><div><a href="/ios/privacy/">iOS 隐私政策</a><a href="/ios/terms/">iOS 使用条款</a><a href="/ios/support/">iOS 帮助与支持</a><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">辽ICP备2025050413号-2</a></div></div><p class="visual-note">页面影像为 AI 生成的概念摄影素材，界面为功能示意。</p></div></footer>
 </body>
 </html>
