@@ -1,208 +1,93 @@
 @charset "UTF-8";
-
-/* Real capture fragments remain unchanged; HTML composes them for the web. */
-body { min-width: 0; }
+/* Original app pixels stay untouched. Crops and photo overlays share one coordinate space. */
 .app-crop { position: relative; display: block; width: 100%; overflow: hidden; background: #f3f3f8; isolation: isolate; }
-.app-crop > img { position: absolute; display: block; max-width: none; object-fit: fill; filter: none; transform: none; pointer-events: none; user-select: none; }
-.shot-card { position: relative; display: block; width: 100%; min-width: 0; overflow: hidden; border-radius: 16px; background: #f3f3f8; box-shadow: 0 22px 55px #293b2414, 0 2px 8px #293b2409; }
-.hero-real-proof { width: 350px; max-width: 100%; padding: 18px; transform: none; animation-name: hero-enter; }
-.hero-real-proof .proof-top { font-size: 11px; }
-.hero-real-proof .app-crop { margin-top: 0; border-radius: 8px; }
+.app-crop > img { position: absolute; display: block; max-width: none; object-fit: fill; pointer-events: none; user-select: none; }
+.shot-card { position: relative; min-width: 0; overflow: hidden; border-radius: 18px; background: #f3f3f8; box-shadow: 0 20px 55px #253d2012,0 1px 3px #253d200d; }
+.hero-proof .app-crop { border-radius: 12px; }
 
-/* An open composition, with the filter sheet beside the gallery. */
-.workflow-panel { grid-template-columns: 1.22fr .78fr; gap: 65px; }
-.app-showcase { min-width: 0; margin: 0; padding: 25px 4px; }
-.showcase-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 565px; }
-.showcase-selection .showcase-stage { display: grid; grid-template-columns: 1.45fr 1fr; gap: 21px; }
-.showcase-selection .shot-main { transform: rotate(-2deg); }
-.showcase-selection .shot-detail { align-self: center; transform: translateY(28px) rotate(2deg); border-radius: 22px; box-shadow: 0 30px 60px #293b241c, 0 3px 12px #293b2409; }
-.showcase-transfer .shot-main { width: min(360px, 100%); transform: rotate(-1.5deg); }
-.showcase-create { padding: 10px 22px; }
-.workflow-copy .section-number { display: none; }
-.workflow-copy h3 { margin-top: 0; }
-.motion-ready :is(.gallery-story, .transfer-story).is-visible .shot-card { animation: capture-arrive .85s var(--ease) both; }
-.motion-ready .gallery-story.is-visible .shot-detail { animation-delay: .13s; }
-@keyframes capture-arrive { from { opacity: 0; translate: 0 22px; } to { opacity: 1; translate: 0 0; } }
-
-/* The gallery stays visible; transfers follow as a separate part of the story. */
-.gallery-story { display: grid; grid-template-columns: 1.22fr .78fr; grid-template-areas: "visual heading" "visual benefits"; align-content: center; align-items: center; gap: 30px 65px; }
+/* A complete gallery and its filter sheet, with the real settings alongside. */
+.gallery-story { display: grid; grid-template-columns: 1.05fr 1fr; grid-template-rows: auto 1fr; grid-template-areas: "visual heading" "visual settings"; gap: 32px 70px; align-items: start; }
 .gallery-story > * { min-width: 0; }
-.gallery-heading { grid-area: heading; align-self: end; }
-.gallery-heading h2 { margin-top: 17px; font-size: clamp(35px, 3.6vw, 49px); }
-.gallery-story .app-showcase { grid-area: visual; width: 100%; max-width: 600px; margin-inline: auto; }
-.gallery-benefits { grid-area: benefits; align-self: start; display: grid; gap: 24px; }
-.gallery-benefits h3 { font-size: 18px; line-height: 1.5; font-weight: 550; }
-.gallery-benefits p { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.9; max-width: 29em; }
-.transfer-story { margin-top: 80px; padding-top: 60px; border-top: 1px solid var(--line); }
+.gallery-heading { grid-area: heading; }
+.gallery-settings { grid-area: settings; }
+.app-showcase { grid-area: visual; width: 100%; max-width: 585px; margin: 0 auto; align-self: center; }
+.showcase-stage { display: grid; grid-template-columns: 1.6fr 1fr; align-items: center; gap: 18px; padding: 20px 0; }
+.showcase-selection .shot-main { transform: rotate(-2deg); }
+.showcase-selection .shot-detail { transform: translateY(22px) rotate(2deg); border-radius: 17px; box-shadow: 0 20px 45px #253d2020; }
+.transfer-visual { width: min(370px,100%); margin: 0 auto; }
+.transfer-visual .shot-card { border-radius: 16px; box-shadow: 0 15px 35px #253d2010; }
 
-/* Generated preview with all five settings from the supplied App screenshots. */
-.editor-composition { width: min(440px, 100%); margin-inline: auto; padding: 18px; border: 1px solid #dce0d5; border-radius: 25px; background: #f4f4f7; box-shadow: 0 25px 65px #293b2412; }
-.editor-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 15px; font-size: 17px; color: #202622; font-weight: 600; }
+/* One preview, followed by every effect control. */
+.effects-real { min-width: 0; width: 100%; }
+.editor-composition { width: min(400px,100%); margin-inline: auto; padding: 17px; border: 1px solid #d4ddcc; border-radius: 24px; background: #f4f4f7; box-shadow: 0 25px 65px #293b2410; }
+.editor-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 14px; font-size: 17px; font-weight: 550; color: #202622; }
 .editor-heading .icon { width: 20px; height: 20px; color: #37899b; }
-.editor-preview { overflow: hidden; border-radius: 13px; }
-.editor-preview > img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
-.editor-settings { display: grid; gap: 9px; margin-top: 16px; }
-.editor-setting { overflow: hidden; border-radius: 14px; }
-.effects-layout { grid-template-columns: .9fr 1.1fr; gap: 100px; }
-.effects-real { min-width: 0; padding: 5px 20px; }
-.effects-real .editor-composition { transform: rotate(1deg); }
-.effects-points { display: grid; gap: 19px; margin: 28px 0 0; padding: 0; list-style: none; }
-.effects-points b { color: #34452a; font-size: 14px; font-weight: 550; }
-.effects-points p { margin-top: 6px; color: #5d6d52; font-size: 12px; line-height: 1.8; }
+.editor-preview { overflow: hidden; border-radius: 12px; }
+.editor-preview > img { display: block; width: 100%; height: auto; aspect-ratio: 3/2; object-fit: cover; }
+.editor-settings { display: grid; gap: 8px; margin-top: 14px; }
+.editor-setting { overflow: hidden; border-radius: 13px; }
 
-/* The connection story is a diagram, free from a rectangular screenshot frame. */
-.connection-layout { gap: 65px; border: 0; border-radius: 0; overflow: visible; }
-.connection-options { display: flex; flex-direction: column; justify-content: center; padding: 0; border: 0; }
-.connection-options button { padding: 27px 0; }
-.connection-index { display: none; }
-.connection-options small { margin-left: 10px; }
-.connection-visual { position: relative; gap: 25px; padding: 12px 0 22px; background: transparent; }
-.connection-drawing { position: relative; min-height: 295px; padding: 30px 15px; }
-.connection-drawing::before { position: absolute; content: ""; inset: -15% 0; background: radial-gradient(ellipse, #b5d98a10 0%, transparent 65%); pointer-events: none; }
-.camera-outline { z-index: 1; width: 145px; height: 98px; background: linear-gradient(135deg,#39442f,#1d271c); border-color: #8d9b7c; border-radius: 17px; box-shadow: 0 20px 35px #0002, inset 0 1px 1px #c6ddab22; }
-.camera-hump { top: -13px; height: 13px; left: 37px; width: 43px; background: #35432c; border-color: #8d9b7c; }
-.camera-dial { width: 22px; right: 17px; }
-.camera-outline > span { font-size: 16px; top: 17px; left: 16px; }
-.camera-lens { width: 68px; height: 68px; left: 45px; top: 14px; border-color: #92aa79; box-shadow: inset 0 0 0 6px #263421, inset 0 0 0 7px #778e62, 0 5px 10px #0003; }
-.camera-lens div { inset: 17px; background: radial-gradient(circle at 35% 30%, #7d9679, #233c32 38%, #131e19 72%); border-color: #819969; }
-.connection-beam { width: 110px; margin-inline: 20px; }
-.phone-outline { z-index: 1; width: 88px; height: 164px; border-radius: 21px; border-color: #98ad82; background: linear-gradient(145deg,#3c4933,#202b1e); box-shadow: inset 0 0 0 6px #1b2319, 0 20px 40px #0003; }
-.phone-outline > i { top: 10px; width: 23px; }
-.phone-outline img { width: 43px; height: 43px; border-radius: 10px; }
-.phone-outline > span { font-size: 12px; }
-.connection-orbit { position: absolute; width: 83%; height: 60%; border: 1px solid #82966a19; border-radius: 50%; transform: rotate(-17deg); pointer-events: none; }
-.connection-panel { max-width: 390px; }
-.connection-panel h3 { font-size: 20px; }
-.connection-panel p { font-size: 12px; }
-.connection-note { margin-top: 40px; }
-.motion-ready .connection-visual.is-in-view .camera-outline { animation: camera-hover 6s ease-in-out infinite; }
-.motion-ready .connection-visual.is-in-view .phone-outline { animation: camera-hover 6s -3s ease-in-out infinite; }
-@keyframes camera-hover { 0%,100% { translate: 0 -4px; } 50% { translate: 0 4px; } }
-
-/* The generated scene sits only inside the original viewfinder. */
-.remote-real { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 100px; padding: 20px 55px 25px; }
-.remote-device { width: min(350px, 100%); min-width: 0; margin: 0 auto; }
-.remote-device .shot-card { border: 1px solid #5b6e4f; border-radius: 25px; box-shadow: 0 30px 65px #0003; }
-.remote-scene { position: absolute; left: 0; top: 7.662%; width: 100%; height: 33.333%; overflow: hidden; border-radius: 4%; }
+/* An upright, full-width phone screen restores the app's actual edge spacing. */
+.remote-layout { display: grid; grid-template-columns: .92fr 1fr; grid-template-areas: "phone heading" "phone tools"; grid-template-rows: auto 1fr; align-items: start; gap: 28px 100px; }
+.remote-heading { grid-area: heading; }
+.remote-tools { grid-area: tools; min-width: 0; }
+.remote-device { grid-area: phone; width: min(352px,100%); margin: 0 auto; align-self: center; }
+.phone-shell { position: relative; padding: 8px; border: 1px solid #6d766d; border-radius: 41px; background: linear-gradient(135deg,#4f5951,#111813 20%,#101511 70%,#444e45); box-shadow: inset 0 0 0 2px #151b16,0 30px 70px #02080366; }
+.phone-shell::before,.phone-shell::after { content: ""; position: absolute; right: -3px; width: 3px; background: #7f8a7c; border-radius: 0 2px 2px 0; }
+.phone-shell::before { top: 17%; height: 9%; }
+.phone-shell::after { top: 29%; height: 6%; }
+.remote-composition { position: relative; overflow: hidden; border-radius: 32px; background: #f3f3f8; }
+.remote-scene { position: absolute; left: 3.333333%; top: 8.242754%; width: 93.240741%; height: 30.298913%; overflow: hidden; border-radius: 4.170804% / 6.278027%; color: white; container-type: inline-size; }
 .remote-scene > img { width: 100%; height: 100%; object-fit: cover; }
-.scene-focus { position: absolute; left: 34%; top: 18%; width: 24%; height: 28%; border: 1px solid #e0f5b7c4; border-radius: 4px; }
-.remote-detail { min-width: 0; }
-.remote-detail h3 { color: #e1e8d9; font-size: 25px; line-height: 1.4; font-weight: 500; letter-spacing: -.035em; }
+.scene-focus { position: absolute; left: 34%; top: 18%; width: 24%; height: 28%; border: 1px solid #e0f5b7c4; border-radius: 3px; }
+.scene-mode { position: absolute; display: flex; gap: 14px; top: 4%; left: 4%; font-size: 3.3cqw; font-weight: 650; text-shadow: 0 1px 4px #0008; }
+.scene-fps { position: absolute; right: 2.5%; bottom: 3%; padding: 1% 2%; border-radius: 12px; background: #12211866; font-size: 2.9cqw; font-weight: 600; }
+.scene-meter { position: absolute; right: 2.4%; top: 5%; height: 53%; width: 5.5%; border: 1px solid #fff4; border-radius: 8px; background: #0c201955; }
+.scene-meter::before { content: ""; position: absolute; inset: 6% 20% 6% 40%; background: repeating-linear-gradient(to bottom,#ffffffe0 0 1px,transparent 1px 10%); }
+.scene-meter::after { content: ""; position: absolute; top: 49%; left: -2px; border-left: 5px solid #8ee2b4; border-block: 3px solid transparent; }
 
-@media (max-width: 1100px) {
-  .workflow-panel { gap: 40px; }
-  .gallery-story { column-gap: 40px; }
-  .showcase-selection .showcase-stage { gap: 15px; }
-  .effects-layout { gap: 50px; }
-  .connection-layout { gap: 40px; }
-  .connection-drawing { padding-inline: 0; }
-  .camera-outline { transform: scale(.9); margin-inline: -6px; }
-  .connection-beam { margin-inline: 8px; }
-  .remote-real { gap: 60px; padding-inline: 25px; }
+@media (max-width:1100px) {
+  .gallery-story { gap: 28px 40px; }
+  .showcase-stage { gap: 14px; }
+  .remote-layout { column-gap: 58px; }
+  .remote-layout { grid-template-areas: "heading heading" "phone tools"; grid-template-rows: auto 1fr; }
+  .remote-heading h2 br { display: none; }
+  .remote-device { width: min(340px,100%); align-self: start; }
 }
-@media (max-width: 900px) {
-  .workflow-panel { grid-template-columns: 1fr; gap: 15px; }
-  .gallery-story { grid-template-columns: 1fr 1fr; grid-template-areas: "heading heading" "visual benefits"; gap: 28px; }
+@media (max-width:900px) {
+  .gallery-story { grid-template-columns: 1fr; grid-template-areas: "heading" "visual" "settings"; gap: 32px; }
+  .gallery-heading { max-width: 650px; }
   .gallery-heading h2 br { display: none; }
-  .gallery-heading h2 { font-size: 37px; }
-  .gallery-story .showcase-stage { grid-template-columns: 1.45fr 1fr; gap: 10px; padding: 15px 0; }
-  .gallery-benefits { align-self: center; gap: 22px; }
-  .gallery-benefits p { font-size: 12px; }
-  .transfer-story { margin-top: 60px; padding-top: 45px; }
-  .workflow-copy { grid-row: 1; max-width: 560px; }
-  .app-showcase { max-width: 620px; width: 100%; margin-inline: auto; }
-  .showcase-stage { min-height: 0; }
-  .showcase-selection .showcase-stage { padding: 15px 10px; }
-  .showcase-create { padding: 10px 0; }
-  .effects-layout { gap: 35px; }
-  .effects-real { padding-inline: 0; }
-  .editor-composition { padding: 13px; border-radius: 20px; }
-  .editor-settings { gap: 7px; margin-top: 12px; }
-  .editor-setting { border-radius: 10px; }
-  .connection-layout { grid-template-columns: 1fr; gap: 24px; }
-  .connection-options { max-width: 600px; width: 100%; margin-inline: auto; }
-  .connection-options small { display: inline; margin-top: 0; }
-  .connection-visual { padding-top: 0; gap: 10px; }
-  .connection-drawing { min-height: 255px; }
-  .connection-beam { flex: none; width: 110px; margin-inline: 20px; }
-  .connection-orbit { max-width: 440px; }
-  .remote-real { gap: 35px; padding-inline: 0; }
+  .gallery-story .app-showcase { max-width: 575px; }
+  .gallery-settings { width: 100%; max-width: 650px; margin-inline: auto; }
+  .showcase-stage { grid-template-columns: 1.6fr 1fr; gap: 24px; }
+  .remote-layout { grid-template-columns: .9fr 1fr; column-gap: 35px; }
+  .remote-heading h2 { font-size: 37px; }
+  .remote-heading .section-lead { font-size: 14px; }
+  .phone-shell { padding: 6px; border-radius: 33px; }
+  .remote-composition { border-radius: 26px; }
 }
-@media (max-width: 600px) {
-  .hero-real-proof { width: 320px; max-width: calc(100% - 4px); padding: 16px; margin-right: 2px; }
-  .gallery-story { grid-template-columns: 1fr; grid-template-areas: "heading" "visual" "benefits"; gap: 16px; }
-  .gallery-heading h2 { font-size: 31px; }
+@media (max-width:759px) {
+  .gallery-story { gap: 28px; }
   .gallery-heading h2 br { display: block; }
-  .gallery-story .showcase-stage { grid-template-columns: 1.45fr 1fr; gap: 13px; }
-  .gallery-benefits { gap: 20px; }
-  .gallery-benefits h3 { font-size: 17px; }
-  .gallery-benefits p { font-size: 13px; }
-  .transfer-story { margin-top: 45px; padding-top: 30px; }
-  .workflow-copy { padding-block: 20px; }
-  .app-showcase { padding: 15px 0 20px; }
-  .showcase-selection .showcase-stage { gap: 13px; padding-inline: 4px; }
-  .showcase-selection .shot-detail { transform: translateY(12px) rotate(2deg); border-radius: 14px; }
+  .app-showcase { max-width: 540px; }
+  .showcase-stage { grid-template-columns: 1.65fr 1fr; gap: 16px; padding-block: 10px; }
+  .showcase-selection .shot-detail { transform: translateY(12px) rotate(2deg); border-radius: 12px; }
   .shot-card { border-radius: 12px; }
-  .showcase-transfer .shot-main { width: min(320px, 95%); }
-  .effects-layout { grid-template-columns: 1fr; gap: 35px; }
-  .effects-real { padding-inline: 2px; }
-  .effects-real .editor-composition { transform: none; }
-  .editor-composition { padding: 13px; border-radius: 20px; }
-  .editor-heading { padding-bottom: 12px; font-size: 16px; }
-  .editor-settings { gap: 7px; }
-  .effects-points { gap: 16px; }
-  .connection-layout { gap: 15px; }
-  .connection-options button { padding-block: 23px; }
-  .connection-options small { margin-left: 8px; }
-  .connection-drawing { min-height: 235px; }
-  .camera-outline { transform: scale(.8); margin-inline: -14px; }
-  .phone-outline { width: 75px; height: 140px; border-radius: 18px; }
-  .phone-outline img { width: 35px; height: 35px; }
-  .connection-beam { flex: 1; max-width: 90px; margin-inline: 12px; }
-  .connection-panel h3 { font-size: 18px; }
-  .connection-panel p { font-size: 12px; }
-  .connection-note { margin-top: 22px; }
-  .remote-real { grid-template-columns: 1fr; gap: 35px; padding-block: 5px 25px; }
-  .remote-device { width: min(330px, 100%); }
+  .gallery-settings { max-width: 570px; }
+  .editor-composition { width: min(400px,100%); padding: 13px; border-radius: 21px; }
+  .editor-heading { font-size: 16px; padding-bottom: 12px; }
+  .editor-settings { gap: 7px; margin-top: 12px; }
+  .editor-setting { border-radius: 11px; }
+  .remote-layout { grid-template-columns: 1fr; grid-template-areas: "heading" "phone" "tools"; gap: 38px; }
+  .remote-device { width: min(330px,calc(100% - 12px)); }
+  .remote-heading h2 { font-size: 38px; }
+  .remote-heading h2 br { display: block; }
+  .remote-tools { width: 100%; max-width: 570px; margin-inline: auto; }
+  .phone-shell { padding: 7px; border-radius: 37px; }
+  .remote-composition { border-radius: 29px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero-real-proof, .shot-card, .connection-drawing * { animation: none !important; }
-  .connection-beam > span { opacity: 1; }
-  .connection-beam > span:nth-of-type(2) { left: 45%; }
-  .connection-beam > span:nth-of-type(3) { left: 90%; }
-}
-
-/* Each section carries one distinct message; only platform-specific CTAs repeat. */
-.hero-bottom { justify-content: flex-end; }
-.platform-coming { display: inline-flex; align-items: baseline; gap: 9px; color: #d8e1ce; font-size: 15px; white-space: nowrap; }
-.platform-coming small { color: #adbba3; font-size: 11px; }
-.connection-steps { display: grid; gap: 10px; margin: 0; padding-left: 24px; color: #c8d6bd; font-size: 13px; line-height: 1.8; text-align: left; }
-.connection-steps li::marker { color: #9bb683; font: 11px var(--mono); }
-.connection-panel { width: fit-content; max-width: 100%; min-height: 105px; }
-.connection-panel > p { text-align: left; margin-left: 24px; }
-.remote-detail { display: grid; gap: 39px; }
-.remote-benefit + .remote-benefit { padding-top: 30px; border-top: 1px solid #ffffff15; }
-.remote-benefit p { margin-top: 12px; color: #a3b397; font-size: 14px; line-height: 1.9; }
-.plan-card h3 { margin-top: 0; }
-.plan-highlight { min-height: 96px; }
-.download-actions .platform-coming { color: #344a25; font-size: 16px; }
-.download .platform-coming small { color: #4c6038; }
-.download-requirement { margin-top: 17px; color: #4c6038; font-size: 11px; }
-.download-mark { padding-top: 0; }
-@media (max-width: 800px) {
-  .remote-detail { gap: 26px; }
-  .remote-detail h3 { font-size: 22px; }
-  .remote-benefit + .remote-benefit { padding-top: 23px; }
-  .remote-benefit p { font-size: 12px; }
-  .platform-coming { font-size: 13px; }
-}
-@media (max-width: 600px) {
-  .hero-actions { gap: 15px 20px; }
-  .platform-coming { gap: 7px; font-size: 13px; }
-  .platform-coming small { font-size: 10px; }
-  .remote-detail { gap: 22px; }
-  .remote-detail h3 { font-size: 23px; }
-  .remote-benefit p { font-size: 13px; }
-  .connection-steps { font-size: 12px; }
-  .download-actions .platform-coming { font-size: 14px; }
+@media (max-width:360px) {
+  .showcase-stage { gap: 12px; }
+  .remote-heading h2 { font-size: 34px; }
 }
