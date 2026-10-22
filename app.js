@@ -48,68 +48,31 @@ document.querySelectorAll('[role="tablist"]').forEach(list => {
   });
 });
 
-const comparison = document.querySelector('.comparison');
-const compareSlider = document.getElementById('compare-slider');
-function updateComparison() {
-  comparison.style.setProperty('--split', `${compareSlider.value}%`);
-  compareSlider.setAttribute('aria-valuetext', `原图区域 ${compareSlider.value}%，效果区域 ${100 - Number(compareSlider.value)}%`);
-}
-compareSlider.addEventListener('input', updateComparison);
-updateComparison();
-document.querySelectorAll('.effect-preset').forEach(button => {
+// Real, unretouched App captures; enlarge the same CSS crop without simulating controls.
+const screenshotDialog = document.querySelector('.screenshot-dialog');
+const screenshotBody = screenshotDialog.querySelector('.screenshot-dialog-body');
+const screenshotTitle = document.getElementById('screenshot-title');
+let screenshotTrigger;
+document.querySelectorAll('[data-screenshot]').forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelectorAll('.effect-preset').forEach(item => {
-      item.classList.toggle('is-active', item === button);
-      item.setAttribute('aria-pressed', String(item === button));
-    });
-    comparison.dataset.look = button.dataset.look;
-    comparison.querySelector('.tag-after').textContent = `${button.textContent}示意`;
+    screenshotTrigger = button;
+    screenshotTitle.textContent = button.dataset.caption;
+    const crop = button.querySelector('.app-crop').cloneNode(true);
+    crop.querySelector('img').loading = 'eager';
+    screenshotBody.replaceChildren(crop);
+    screenshotDialog.showModal();
+    document.body.classList.add('screenshot-open');
   });
 });
-// The range is the keyboard control; the photo itself also supports pointer dragging.
-comparison.addEventListener('pointerdown', event => {
-  if (event.button !== 0) return;
-  comparison.setPointerCapture(event.pointerId);
-  dragComparison(event);
+screenshotDialog.querySelector('.screenshot-close').addEventListener('click', () => screenshotDialog.close());
+screenshotDialog.addEventListener('click', event => {
+  if (event.target !== screenshotDialog) return;
+  const bounds = screenshotDialog.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) screenshotDialog.close();
 });
-comparison.addEventListener('pointermove', event => {
-  if (comparison.hasPointerCapture(event.pointerId)) dragComparison(event);
-});
-function dragComparison(event) {
-  const bounds = comparison.getBoundingClientRect();
-  compareSlider.value = Math.round(Math.max(0, Math.min(100, (event.clientX - bounds.left) / bounds.width * 100)));
-  updateComparison();
-}
-
-// A deliberately labelled browser simulation, never a real camera connection.
-const monitor = document.getElementById('monitor-screen');
-const focusTarget = monitor.querySelector('.focus-target');
-let focusTimer;
-let focusPosition = 0;
-function moveFocus(x, y) {
-  focusTarget.style.left = `${Math.max(12, Math.min(88, x))}%`;
-  focusTarget.style.top = `${Math.max(20, Math.min(73, y))}%`;
-  focusTarget.classList.add('focusing');
-  clearTimeout(focusTimer);
-  focusTimer = setTimeout(() => focusTarget.classList.remove('focusing'), 320);
-}
-monitor.addEventListener('click', event => {
-  if (event.target.closest('.focus-target')) return;
-  const bounds = monitor.getBoundingClientRect();
-  moveFocus((event.clientX - bounds.left) / bounds.width * 100, (event.clientY - bounds.top) / bounds.height * 100);
-});
-focusTarget.addEventListener('click', event => {
-  event.stopPropagation();
-  const positions = [[33, 40], [66, 40], [50, 55]];
-  const [x, y] = positions[focusPosition++ % positions.length];
-  moveFocus(x, y);
-});
-[['toggle-grid', 'no-grid'], ['toggle-info', 'no-info']].forEach(([id, className]) => {
-  const button = document.getElementById(id);
-  button.addEventListener('click', () => {
-    const hidden = monitor.classList.toggle(className);
-    button.setAttribute('aria-pressed', String(!hidden));
-  });
+screenshotDialog.addEventListener('close', () => {
+  document.body.classList.remove('screenshot-open');
+  screenshotTrigger?.focus({ preventScroll: true });
 });
 
 const copyStatus = document.querySelector('.copy-status');

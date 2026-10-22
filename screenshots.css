@@ -1,0 +1,291 @@
+@charset "UTF-8";
+
+/* Real App captures: the inline viewport geometry preserves the source pixels. */
+.app-crop {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: #f3f3f8;
+  isolation: isolate;
+}
+.app-crop > img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  object-fit: fill;
+  filter: none;
+  transform: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.shot-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  appearance: none;
+  border: 1px solid #cdd5c6;
+  border-radius: 10px;
+  background: #f9faf5;
+  color: #44543a;
+  text-align: left;
+  cursor: zoom-in;
+  box-shadow: 0 12px 28px #3445220d, 0 2px 5px #34452208;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s;
+}
+.shot-card:focus-visible { outline: 3px solid #7b9958; outline-offset: 5px; }
+.shot-open {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 33px;
+  padding: 8px 13px;
+  border-top: 1px solid #dce2d6;
+  color: #526548;
+  background: #f9faf5;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: .025em;
+}
+.showcase-caption {
+  margin-top: 18px;
+  color: #626f57;
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* The original one-line queue state replaces the illustrative transfer card. */
+.hero-real-proof {
+  width: 360px;
+  max-width: 100%;
+  padding: 18px;
+  transform: none;
+  animation-name: hero-enter;
+}
+.hero-real-proof .proof-top { font-size: 11px; }
+.hero-real-proof .proof-state { font-size: 9px; }
+.hero-real-proof .app-crop { margin-top: 16px; border-radius: 8px; }
+.hero-real-proof > p { gap: 12px; margin-top: 12px; font-size: 8px; line-height: 1.7; }
+.hero-real-proof > p > span { white-space: nowrap; }
+
+/* Three equally sized stages keep the workflow steady when its tabs change. */
+.app-showcase {
+  min-width: 0;
+  margin: 0;
+  padding: 22px;
+  border: 1px solid #d9e0d1;
+  border-radius: 7px;
+  background: #e8ece1;
+}
+.showcase-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  color: #5d6e50;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: .035em;
+}
+.showcase-heading > span:first-child { display: flex; align-items: center; gap: 7px; }
+.showcase-heading .status-dot { width: 4px; height: 4px; background: #7f985f; }
+.showcase-heading > span:last-child { color: #68765c; }
+.showcase-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 548px;
+  margin-top: 20px;
+}
+.showcase-selection .shot-main { width: min(248px, 100%); margin-right: 48px; }
+.showcase-selection .shot-detail {
+  position: absolute;
+  z-index: 2;
+  right: -3px;
+  bottom: 30px;
+  width: min(246px, 75%);
+  border-color: #c5d1b8;
+  box-shadow: 0 18px 38px #263c2221, 0 3px 9px #263c2212;
+}
+.showcase-transfer .shot-main { width: min(350px, 100%); }
+.showcase-create .shot-main { width: min(280px, 100%); }
+.app-showcase .showcase-caption { margin-top: 17px; }
+
+/* Local image effects are presented as actual controls, without CSS recoloring. */
+.effects-points { display: grid; gap: 12px; margin: 26px 0 0; padding: 0; list-style: none; color: #59694e; font-size: 13px; line-height: 1.9; }
+.effects-points > li { display: flex; align-items: flex-start; gap: 13px; }
+.effects-points > li > span { flex: none; min-width: 18px; padding-top: 3px; color: #6e805d; font: 10px/1.9 var(--mono); }
+.effects-points > li > div { min-width: 0; }
+.effects-points b { display: block; color: #34452a; font-size: 13px; font-weight: 550; }
+.effects-points p { margin-top: 3px; color: #5d6d52; font-size: 12px; line-height: 1.8; }
+.effects-real { min-width: 0; padding: 26px; border: 1px solid #dae0d2; border-radius: 7px; background: #e8ece1; }
+.shot-settings { width: 100%; margin-inline: auto; }
+.effects-real .showcase-caption { margin-top: 16px; }
+
+/* The selected connection description and the labelled static capture coexist. */
+.connection-options { display: flex; flex-direction: column; justify-content: center; }
+.connection-visual { gap: 25px; padding: 29px 34px; }
+.connection-shot { width: min(370px, 100%); margin-inline: auto; }
+.connection-shot .shot-card { border-color: #75866b; box-shadow: 0 15px 35px #0712062b; }
+.connection-shot .showcase-caption { margin-top: 12px; color: #a0b393; font-size: 10px; }
+.connection-visual .connection-panel { width: 100%; }
+.connection-visual .connection-panel h3 { margin-top: 8px; }
+.connection-visual .connection-panel p { margin-top: 10px; }
+
+/* A portrait overview and a large control crop each serve a different reading scale. */
+.remote-real {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 86px;
+  padding: 38px 52px;
+  border: 1px solid #3c4934;
+  border-radius: 8px;
+  background: #1d251b;
+}
+.remote-device { width: min(310px, 100%); min-width: 0; margin: 0 auto; }
+.remote-device .shot-card { border-color: #697d5a; box-shadow: 0 22px 40px #07120630; }
+.remote-device .showcase-caption { color: #a0b393; }
+.remote-detail { min-width: 0; }
+.remote-detail > .eyebrow { color: #b2c99f; font-size: 10px; }
+.remote-detail h3 { margin-top: 18px; color: #e1e8d9; font-size: 35px; line-height: 1.35; font-weight: 500; letter-spacing: -.035em; }
+.remote-detail > p:not(.eyebrow) { margin-top: 20px; color: #a3b397; font-size: 13px; line-height: 1.95; }
+.remote-controls { margin-top: 27px; border-color: #7d906f; box-shadow: 0 14px 35px #0b150923; }
+.remote-detail > .fine-print { margin-top: 17px !important; color: #98ac8a !important; font-size: 10px !important; }
+.remote-real .shot-open { color: #4b603d; }
+
+/* The dialog scrolls its image only; its title and close button remain visible. */
+body { min-width: 0; }
+body.screenshot-open { overflow: hidden; }
+html:not(.has-js) .shot-card { cursor: default; }
+html:not(.has-js) .shot-open { display: none; }
+.screenshot-dialog {
+  width: min(900px, calc(100% - 48px));
+  max-width: none;
+  max-height: 90vh;
+  max-height: 90dvh;
+  padding: 0;
+  margin: auto;
+  overflow: hidden;
+  border: 1px solid #b8c6ab;
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 30px 100px #0006;
+}
+.screenshot-dialog[open] { display: flex; flex-direction: column; }
+.screenshot-dialog::backdrop { background: #081108cc; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.screenshot-dialog-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  gap: 25px;
+  padding: 17px 23px;
+  border-bottom: 1px solid #d1dbc7;
+  background: var(--paper);
+}
+.screenshot-dialog-bar > strong { min-width: 0; color: #36462d; font-size: 13px; line-height: 1.8; font-weight: 550; overflow-wrap: anywhere; }
+.screenshot-close { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex: none; min-width: 77px; min-height: 38px; padding: 7px 10px; border: 1px solid #c3cfb8; border-radius: 4px; background: #e9efdf; color: #3c5230; font-size: 11px; }
+.screenshot-close > span { font-size: 23px; line-height: 1; font-weight: 300; }
+.screenshot-close:focus-visible { outline: 3px solid #6e8c4c; outline-offset: 3px; }
+.screenshot-dialog-body { flex: 1 1 auto; min-height: 0; padding: 25px; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; background: #e3e9dc; }
+.screenshot-dialog-body > .app-crop { width: min(640px, 100%); margin-inline: auto; border-radius: 5px; box-shadow: 0 4px 18px #34452210; }
+.screenshot-dialog-note { flex: 0 0 auto; margin: 0; padding: 13px 23px; border-top: 1px solid #d1dbc7; color: #5b6b4f; background: var(--paper); font-size: 10px; line-height: 1.8; }
+
+@media (hover: hover) {
+  .shot-card:hover { transform: translateY(-3px); border-color: #8fa47b; box-shadow: 0 17px 34px #3445221c, 0 3px 8px #34452210; }
+  .shot-card:hover .shot-open { color: #29411d; background: #eff4e8; }
+  .screenshot-close:hover { background: #dce8cf; border-color: #9cae8b; }
+}
+@media (max-width: 1100px) and (min-width: 801px) {
+  .hero-real-proof { width: 315px; }
+  .app-showcase { padding: 19px; }
+  .showcase-selection .shot-main { margin-right: 38px; }
+  .showcase-selection .shot-detail { width: min(218px, 75%); right: -2px; }
+  .connection-visual { padding-inline: 25px; }
+  .remote-real { gap: 49px; padding: 34px; }
+  .remote-detail h3 { font-size: 30px; }
+}
+@media (max-width: 800px) {
+  .hero-real-proof { width: 330px; padding: 17px; }
+  .hero-real-proof .proof-top { font-size: 10px; }
+  .app-showcase { padding: 17px; }
+  .showcase-heading { gap: 10px; font-size: 9px; }
+  .showcase-stage { min-height: 498px; margin-top: 17px; }
+  .showcase-selection .shot-main { width: min(225px, 100%); margin-right: 24px; }
+  .showcase-selection .shot-detail { width: min(205px, 80%); right: -3px; bottom: 34px; }
+  .showcase-transfer .shot-main { width: min(315px, 100%); }
+  .showcase-create .shot-main { width: min(255px, 100%); }
+  .showcase-caption { font-size: 10px; }
+  .effects-real { padding: 20px; }
+  .effects-points { gap: 10px; font-size: 12px; }
+  .connection-visual { padding: 23px; gap: 22px; }
+  .remote-real { gap: 36px; padding: 30px; }
+  .remote-device { width: min(260px, 100%); }
+  .remote-detail h3 { font-size: 27px; }
+  .remote-detail > p:not(.eyebrow) { font-size: 12px; }
+  .remote-detail > .eyebrow { font-size: 9px; }
+  .remote-controls { margin-top: 22px; }
+}
+@media (max-width: 600px) {
+  .hero-real-proof { width: 320px; max-width: calc(100% - 4px); margin-right: 2px; padding: 16px; }
+  .hero-real-proof .app-crop { margin-top: 14px; }
+  .hero-real-proof > p { flex-wrap: wrap; gap: 3px 12px; font-size: 9px; }
+  .hero-real-proof > p > span { margin-left: auto; font-size: 8px; }
+  .app-showcase { padding: 19px; }
+  .showcase-heading { gap: 12px; font-size: 10px; }
+  .showcase-stage { min-height: 0; padding-block: 4px 5px; margin-top: 19px; }
+  .showcase-selection .showcase-stage { min-height: 500px; padding-bottom: 30px; }
+  .showcase-selection .shot-main { width: min(246px, 86%); margin-right: 29px; }
+  .showcase-selection .shot-detail { width: min(234px, 78%); right: -3px; bottom: 5px; }
+  .showcase-transfer .shot-main { width: min(325px, 100%); }
+  .showcase-create .shot-main { width: min(280px, 100%); }
+  .shot-open { min-height: 35px; padding: 9px 12px; font-size: 11px; }
+  .showcase-caption { margin-top: 16px; font-size: 11px; }
+  .effects-points { margin-top: 23px; gap: 11px; font-size: 13px; }
+  .effects-real { padding: 19px; }
+  .connection-visual { padding: 25px 22px; gap: 25px; }
+  .connection-shot { width: min(370px, 100%); }
+  .connection-shot .showcase-caption { font-size: 11px; }
+  .remote-real { grid-template-columns: 1fr; gap: 34px; padding: 26px 21px; }
+  .remote-device { width: min(285px, 100%); }
+  .remote-detail { padding-top: 28px; border-top: 1px solid #3c4934; }
+  .remote-detail > .eyebrow { font-size: 10px; }
+  .remote-detail h3 { margin-top: 14px; font-size: 29px; }
+  .remote-detail > p:not(.eyebrow) { margin-top: 17px; font-size: 13px; }
+  .remote-detail > p:not(.eyebrow) br { display: none; }
+  .remote-detail > .fine-print { font-size: 11px !important; line-height: 1.85; }
+  .remote-controls { margin-top: 23px; }
+  .screenshot-dialog { width: calc(100% - 20px); max-height: 92vh; max-height: 92dvh; border-radius: 8px; }
+  .screenshot-dialog-bar { align-items: flex-start; gap: 12px; padding: 13px; }
+  .screenshot-dialog-bar > strong { align-self: center; font-size: 12px; line-height: 1.75; }
+  .screenshot-close { min-width: 66px; min-height: 38px; padding-inline: 8px; gap: 8px; font-size: 11px; }
+  .screenshot-dialog-body { padding: 11px; scrollbar-gutter: auto; }
+  .screenshot-dialog-body > .app-crop { border-radius: 3px; }
+  .screenshot-dialog-note { padding: 11px 13px; font-size: 10px; }
+}
+@media (max-width: 360px) {
+  .app-showcase, .effects-real { padding: 15px; }
+  .showcase-heading { gap: 8px; font-size: 9px; }
+  .showcase-selection .showcase-stage { min-height: 460px; }
+  .showcase-selection .shot-main { margin-right: 25px; }
+  .showcase-selection .shot-detail { width: 81%; right: -2px; }
+  .connection-visual { padding-inline: 18px; }
+  .remote-real { padding-inline: 18px; }
+  .remote-detail h3 { font-size: 27px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-real-proof { animation: none; transform: none; }
+  .shot-card { transition: none; }
+  .shot-card:hover { transform: none; }
+}
