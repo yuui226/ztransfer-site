@@ -48,33 +48,6 @@ document.querySelectorAll('[role="tablist"]').forEach(list => {
   });
 });
 
-// Real, unretouched App captures; enlarge the same CSS crop without simulating controls.
-const screenshotDialog = document.querySelector('.screenshot-dialog');
-const screenshotBody = screenshotDialog.querySelector('.screenshot-dialog-body');
-const screenshotTitle = document.getElementById('screenshot-title');
-let screenshotTrigger;
-document.querySelectorAll('[data-screenshot]').forEach(button => {
-  button.addEventListener('click', () => {
-    screenshotTrigger = button;
-    screenshotTitle.textContent = button.dataset.caption;
-    const crop = button.querySelector('.app-crop').cloneNode(true);
-    crop.querySelector('img').loading = 'eager';
-    screenshotBody.replaceChildren(crop);
-    screenshotDialog.showModal();
-    document.body.classList.add('screenshot-open');
-  });
-});
-screenshotDialog.querySelector('.screenshot-close').addEventListener('click', () => screenshotDialog.close());
-screenshotDialog.addEventListener('click', event => {
-  if (event.target !== screenshotDialog) return;
-  const bounds = screenshotDialog.getBoundingClientRect();
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) screenshotDialog.close();
-});
-screenshotDialog.addEventListener('close', () => {
-  document.body.classList.remove('screenshot-open');
-  screenshotTrigger?.focus({ preventScroll: true });
-});
-
 const copyStatus = document.querySelector('.copy-status');
 let copyTimer;
 document.querySelector('.copy-contact').addEventListener('click', async event => {

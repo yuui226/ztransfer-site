@@ -1,291 +1,156 @@
 @charset "UTF-8";
 
-/* Real App captures: the inline viewport geometry preserves the source pixels. */
-.app-crop {
-  position: relative;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  background: #f3f3f8;
-  isolation: isolate;
-}
-.app-crop > img {
-  position: absolute;
-  display: block;
-  max-width: none;
-  object-fit: fill;
-  filter: none;
-  transform: none;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.shot-card {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-  overflow: hidden;
-  appearance: none;
-  border: 1px solid #cdd5c6;
-  border-radius: 10px;
-  background: #f9faf5;
-  color: #44543a;
-  text-align: left;
-  cursor: zoom-in;
-  box-shadow: 0 12px 28px #3445220d, 0 2px 5px #34452208;
-  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s;
-}
-.shot-card:focus-visible { outline: 3px solid #7b9958; outline-offset: 5px; }
-.shot-open {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 33px;
-  padding: 8px 13px;
-  border-top: 1px solid #dce2d6;
-  color: #526548;
-  background: #f9faf5;
-  font-size: 10px;
-  line-height: 1.5;
-  letter-spacing: .025em;
-}
-.showcase-caption {
-  margin-top: 18px;
-  color: #626f57;
-  font-size: 11px;
-  line-height: 1.8;
-  text-align: center;
-  text-wrap: pretty;
-}
-
-/* The original one-line queue state replaces the illustrative transfer card. */
-.hero-real-proof {
-  width: 360px;
-  max-width: 100%;
-  padding: 18px;
-  transform: none;
-  animation-name: hero-enter;
-}
-.hero-real-proof .proof-top { font-size: 11px; }
-.hero-real-proof .proof-state { font-size: 9px; }
-.hero-real-proof .app-crop { margin-top: 16px; border-radius: 8px; }
-.hero-real-proof > p { gap: 12px; margin-top: 12px; font-size: 8px; line-height: 1.7; }
-.hero-real-proof > p > span { white-space: nowrap; }
-
-/* Three equally sized stages keep the workflow steady when its tabs change. */
-.app-showcase {
-  min-width: 0;
-  margin: 0;
-  padding: 22px;
-  border: 1px solid #d9e0d1;
-  border-radius: 7px;
-  background: #e8ece1;
-}
-.showcase-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  color: #5d6e50;
-  font-size: 10px;
-  line-height: 1.6;
-  letter-spacing: .035em;
-}
-.showcase-heading > span:first-child { display: flex; align-items: center; gap: 7px; }
-.showcase-heading .status-dot { width: 4px; height: 4px; background: #7f985f; }
-.showcase-heading > span:last-child { color: #68765c; }
-.showcase-stage {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 548px;
-  margin-top: 20px;
-}
-.showcase-selection .shot-main { width: min(248px, 100%); margin-right: 48px; }
-.showcase-selection .shot-detail {
-  position: absolute;
-  z-index: 2;
-  right: -3px;
-  bottom: 30px;
-  width: min(246px, 75%);
-  border-color: #c5d1b8;
-  box-shadow: 0 18px 38px #263c2221, 0 3px 9px #263c2212;
-}
-.showcase-transfer .shot-main { width: min(350px, 100%); }
-.showcase-create .shot-main { width: min(280px, 100%); }
-.app-showcase .showcase-caption { margin-top: 17px; }
-
-/* Local image effects are presented as actual controls, without CSS recoloring. */
-.effects-points { display: grid; gap: 12px; margin: 26px 0 0; padding: 0; list-style: none; color: #59694e; font-size: 13px; line-height: 1.9; }
-.effects-points > li { display: flex; align-items: flex-start; gap: 13px; }
-.effects-points > li > span { flex: none; min-width: 18px; padding-top: 3px; color: #6e805d; font: 10px/1.9 var(--mono); }
-.effects-points > li > div { min-width: 0; }
-.effects-points b { display: block; color: #34452a; font-size: 13px; font-weight: 550; }
-.effects-points p { margin-top: 3px; color: #5d6d52; font-size: 12px; line-height: 1.8; }
-.effects-real { min-width: 0; padding: 26px; border: 1px solid #dae0d2; border-radius: 7px; background: #e8ece1; }
-.shot-settings { width: 100%; margin-inline: auto; }
-.effects-real .showcase-caption { margin-top: 16px; }
-
-/* The selected connection description and the labelled static capture coexist. */
-.connection-options { display: flex; flex-direction: column; justify-content: center; }
-.connection-visual { gap: 25px; padding: 29px 34px; }
-.connection-shot { width: min(370px, 100%); margin-inline: auto; }
-.connection-shot .shot-card { border-color: #75866b; box-shadow: 0 15px 35px #0712062b; }
-.connection-shot .showcase-caption { margin-top: 12px; color: #a0b393; font-size: 10px; }
-.connection-visual .connection-panel { width: 100%; }
-.connection-visual .connection-panel h3 { margin-top: 8px; }
-.connection-visual .connection-panel p { margin-top: 10px; }
-
-/* A portrait overview and a large control crop each serve a different reading scale. */
-.remote-real {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 86px;
-  padding: 38px 52px;
-  border: 1px solid #3c4934;
-  border-radius: 8px;
-  background: #1d251b;
-}
-.remote-device { width: min(310px, 100%); min-width: 0; margin: 0 auto; }
-.remote-device .shot-card { border-color: #697d5a; box-shadow: 0 22px 40px #07120630; }
-.remote-device .showcase-caption { color: #a0b393; }
-.remote-detail { min-width: 0; }
-.remote-detail > .eyebrow { color: #b2c99f; font-size: 10px; }
-.remote-detail h3 { margin-top: 18px; color: #e1e8d9; font-size: 35px; line-height: 1.35; font-weight: 500; letter-spacing: -.035em; }
-.remote-detail > p:not(.eyebrow) { margin-top: 20px; color: #a3b397; font-size: 13px; line-height: 1.95; }
-.remote-controls { margin-top: 27px; border-color: #7d906f; box-shadow: 0 14px 35px #0b150923; }
-.remote-detail > .fine-print { margin-top: 17px !important; color: #98ac8a !important; font-size: 10px !important; }
-.remote-real .shot-open { color: #4b603d; }
-
-/* The dialog scrolls its image only; its title and close button remain visible. */
+/* Real capture fragments remain unchanged; HTML composes them for the web. */
 body { min-width: 0; }
-body.screenshot-open { overflow: hidden; }
-html:not(.has-js) .shot-card { cursor: default; }
-html:not(.has-js) .shot-open { display: none; }
-.screenshot-dialog {
-  width: min(900px, calc(100% - 48px));
-  max-width: none;
-  max-height: 90vh;
-  max-height: 90dvh;
-  padding: 0;
-  margin: auto;
-  overflow: hidden;
-  border: 1px solid #b8c6ab;
-  border-radius: 10px;
-  background: var(--paper);
-  color: var(--ink);
-  box-shadow: 0 30px 100px #0006;
-}
-.screenshot-dialog[open] { display: flex; flex-direction: column; }
-.screenshot-dialog::backdrop { background: #081108cc; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-.screenshot-dialog-bar {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 0 0 auto;
-  gap: 25px;
-  padding: 17px 23px;
-  border-bottom: 1px solid #d1dbc7;
-  background: var(--paper);
-}
-.screenshot-dialog-bar > strong { min-width: 0; color: #36462d; font-size: 13px; line-height: 1.8; font-weight: 550; overflow-wrap: anywhere; }
-.screenshot-close { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex: none; min-width: 77px; min-height: 38px; padding: 7px 10px; border: 1px solid #c3cfb8; border-radius: 4px; background: #e9efdf; color: #3c5230; font-size: 11px; }
-.screenshot-close > span { font-size: 23px; line-height: 1; font-weight: 300; }
-.screenshot-close:focus-visible { outline: 3px solid #6e8c4c; outline-offset: 3px; }
-.screenshot-dialog-body { flex: 1 1 auto; min-height: 0; padding: 25px; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; background: #e3e9dc; }
-.screenshot-dialog-body > .app-crop { width: min(640px, 100%); margin-inline: auto; border-radius: 5px; box-shadow: 0 4px 18px #34452210; }
-.screenshot-dialog-note { flex: 0 0 auto; margin: 0; padding: 13px 23px; border-top: 1px solid #d1dbc7; color: #5b6b4f; background: var(--paper); font-size: 10px; line-height: 1.8; }
+.app-crop { position: relative; display: block; width: 100%; overflow: hidden; background: #f3f3f8; isolation: isolate; }
+.app-crop > img { position: absolute; display: block; max-width: none; object-fit: fill; filter: none; transform: none; pointer-events: none; user-select: none; }
+.shot-card { position: relative; display: block; width: 100%; min-width: 0; overflow: hidden; border-radius: 16px; background: #f3f3f8; box-shadow: 0 22px 55px #293b2414, 0 2px 8px #293b2409; }
+.hero-real-proof { width: 350px; max-width: 100%; padding: 18px; transform: none; animation-name: hero-enter; }
+.hero-real-proof .proof-top { font-size: 11px; }
+.hero-real-proof .app-crop { margin-top: 14px; border-radius: 8px; }
 
-@media (hover: hover) {
-  .shot-card:hover { transform: translateY(-3px); border-color: #8fa47b; box-shadow: 0 17px 34px #3445221c, 0 3px 8px #34452210; }
-  .shot-card:hover .shot-open { color: #29411d; background: #eff4e8; }
-  .screenshot-close:hover { background: #dce8cf; border-color: #9cae8b; }
+/* An open composition, with the filter sheet beside the gallery. */
+.workflow-panel { grid-template-columns: 1.22fr .78fr; gap: 65px; }
+.app-showcase { min-width: 0; margin: 0; padding: 25px 4px; }
+.showcase-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 565px; }
+.showcase-selection .showcase-stage { display: grid; grid-template-columns: 1.08fr 1fr; gap: 21px; }
+.showcase-selection .shot-main { transform: rotate(-2deg); }
+.showcase-selection .shot-detail { align-self: center; transform: translateY(28px) rotate(2deg); border-radius: 22px; box-shadow: 0 30px 60px #293b241c, 0 3px 12px #293b2409; }
+.showcase-transfer .shot-main { width: min(360px, 100%); transform: rotate(-1.5deg); }
+.showcase-create { padding: 10px 22px; }
+.workflow-copy .section-number { display: none; }
+.workflow-copy h3 { margin-top: 0; }
+.motion-ready .workflow-panels.is-visible .workflow-panel:not([hidden]) .shot-card { animation: capture-arrive .85s var(--ease) both; }
+.motion-ready .workflow-panels.is-visible .workflow-panel:not([hidden]) .shot-detail { animation-delay: .13s; }
+@keyframes capture-arrive { from { opacity: 0; translate: 0 22px; } to { opacity: 1; translate: 0 0; } }
+
+/* Preview + all five settings, assembled from the supplied App screenshots. */
+.editor-composition { width: min(440px, 100%); margin-inline: auto; padding: 18px; border: 1px solid #dce0d5; border-radius: 25px; background: #f4f4f7; box-shadow: 0 25px 65px #293b2412; }
+.editor-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 15px; font-size: 17px; color: #202622; font-weight: 600; }
+.editor-heading .icon { width: 20px; height: 20px; color: #37899b; }
+.editor-preview { overflow: hidden; border-radius: 13px; }
+.editor-settings { display: grid; gap: 9px; margin-top: 16px; }
+.editor-setting { overflow: hidden; border-radius: 14px; }
+.effects-layout { grid-template-columns: .9fr 1.1fr; gap: 100px; }
+.effects-real { min-width: 0; padding: 5px 20px; }
+.effects-real .editor-composition { transform: rotate(1deg); }
+.effects-points { display: grid; gap: 19px; margin: 28px 0 0; padding: 0; list-style: none; }
+.effects-points b { color: #34452a; font-size: 14px; font-weight: 550; }
+.effects-points p { margin-top: 6px; color: #5d6d52; font-size: 12px; line-height: 1.8; }
+
+/* The connection story is a diagram, free from a rectangular screenshot frame. */
+.connection-layout { gap: 65px; border: 0; border-radius: 0; overflow: visible; }
+.connection-options { display: flex; flex-direction: column; justify-content: center; padding: 0; border: 0; }
+.connection-options button { padding: 27px 0; }
+.connection-index { display: none; }
+.connection-options small { margin-left: 10px; }
+.connection-visual { position: relative; gap: 25px; padding: 12px 0 22px; background: transparent; }
+.connection-drawing { position: relative; min-height: 295px; padding: 30px 15px; }
+.connection-drawing::before { position: absolute; content: ""; inset: -15% 0; background: radial-gradient(ellipse, #b5d98a10 0%, transparent 65%); pointer-events: none; }
+.camera-outline { z-index: 1; width: 145px; height: 98px; background: linear-gradient(135deg,#39442f,#1d271c); border-color: #8d9b7c; border-radius: 17px; box-shadow: 0 20px 35px #0002, inset 0 1px 1px #c6ddab22; }
+.camera-hump { top: -13px; height: 13px; left: 37px; width: 43px; background: #35432c; border-color: #8d9b7c; }
+.camera-dial { width: 22px; right: 17px; }
+.camera-outline > span { font-size: 16px; top: 17px; left: 16px; }
+.camera-lens { width: 68px; height: 68px; left: 45px; top: 14px; border-color: #92aa79; box-shadow: inset 0 0 0 6px #263421, inset 0 0 0 7px #778e62, 0 5px 10px #0003; }
+.camera-lens div { inset: 17px; background: radial-gradient(circle at 35% 30%, #7d9679, #233c32 38%, #131e19 72%); border-color: #819969; }
+.connection-beam { width: 110px; margin-inline: 20px; }
+.phone-outline { z-index: 1; width: 88px; height: 164px; border-radius: 21px; border-color: #98ad82; background: linear-gradient(145deg,#3c4933,#202b1e); box-shadow: inset 0 0 0 6px #1b2319, 0 20px 40px #0003; }
+.phone-outline > i { top: 10px; width: 23px; }
+.phone-outline img { width: 43px; height: 43px; border-radius: 10px; }
+.phone-outline > span { font-size: 12px; }
+.connection-orbit { position: absolute; width: 83%; height: 60%; border: 1px solid #82966a19; border-radius: 50%; transform: rotate(-17deg); pointer-events: none; }
+.connection-panel { max-width: 390px; }
+.connection-panel h3 { font-size: 20px; }
+.connection-panel p { font-size: 12px; }
+.connection-note { margin-top: 40px; }
+.motion-ready .connection-visual.is-in-view .camera-outline { animation: camera-hover 6s ease-in-out infinite; }
+.motion-ready .connection-visual.is-in-view .phone-outline { animation: camera-hover 6s -3s ease-in-out infinite; }
+@keyframes camera-hover { 0%,100% { translate: 0 -4px; } 50% { translate: 0 4px; } }
+
+/* The generated scene sits only inside the original viewfinder. */
+.remote-real { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 100px; padding: 20px 55px 25px; }
+.remote-device { width: min(350px, 100%); min-width: 0; margin: 0 auto; }
+.remote-device .shot-card { border: 1px solid #5b6e4f; border-radius: 25px; box-shadow: 0 30px 65px #0003; }
+.remote-scene { position: absolute; left: 0; top: 7.662%; width: 100%; height: 33.333%; overflow: hidden; border-radius: 4%; }
+.remote-scene > img { width: 100%; height: 100%; object-fit: cover; }
+.scene-focus { position: absolute; left: 34%; top: 18%; width: 24%; height: 28%; border: 1px solid #e0f5b7c4; border-radius: 4px; }
+.remote-detail { min-width: 0; }
+.remote-detail h3 { color: #e1e8d9; font-size: 37px; line-height: 1.4; font-weight: 500; letter-spacing: -.035em; }
+.remote-detail > p { margin-top: 22px; color: #a3b397; font-size: 13px; line-height: 1.95; }
+.remote-control-detail { margin-top: 30px; overflow: hidden; border-radius: 16px; box-shadow: 0 20px 45px #0002; }
+.remote-detail > .fine-print { color: #93a685; font-size: 10px; }
+
+@media (max-width: 1100px) {
+  .workflow-panel { gap: 40px; }
+  .showcase-selection .showcase-stage { gap: 15px; }
+  .effects-layout { gap: 50px; }
+  .connection-layout { gap: 40px; }
+  .connection-drawing { padding-inline: 0; }
+  .camera-outline { transform: scale(.9); margin-inline: -6px; }
+  .connection-beam { margin-inline: 8px; }
+  .remote-real { gap: 60px; padding-inline: 25px; }
+  .remote-detail h3 { font-size: 31px; }
 }
-@media (max-width: 1100px) and (min-width: 801px) {
-  .hero-real-proof { width: 315px; }
-  .app-showcase { padding: 19px; }
-  .showcase-selection .shot-main { margin-right: 38px; }
-  .showcase-selection .shot-detail { width: min(218px, 75%); right: -2px; }
-  .connection-visual { padding-inline: 25px; }
-  .remote-real { gap: 49px; padding: 34px; }
-  .remote-detail h3 { font-size: 30px; }
-}
-@media (max-width: 800px) {
-  .hero-real-proof { width: 330px; padding: 17px; }
-  .hero-real-proof .proof-top { font-size: 10px; }
-  .app-showcase { padding: 17px; }
-  .showcase-heading { gap: 10px; font-size: 9px; }
-  .showcase-stage { min-height: 498px; margin-top: 17px; }
-  .showcase-selection .shot-main { width: min(225px, 100%); margin-right: 24px; }
-  .showcase-selection .shot-detail { width: min(205px, 80%); right: -3px; bottom: 34px; }
-  .showcase-transfer .shot-main { width: min(315px, 100%); }
-  .showcase-create .shot-main { width: min(255px, 100%); }
-  .showcase-caption { font-size: 10px; }
-  .effects-real { padding: 20px; }
-  .effects-points { gap: 10px; font-size: 12px; }
-  .connection-visual { padding: 23px; gap: 22px; }
-  .remote-real { gap: 36px; padding: 30px; }
-  .remote-device { width: min(260px, 100%); }
-  .remote-detail h3 { font-size: 27px; }
-  .remote-detail > p:not(.eyebrow) { font-size: 12px; }
-  .remote-detail > .eyebrow { font-size: 9px; }
-  .remote-controls { margin-top: 22px; }
+@media (max-width: 900px) {
+  .workflow-panel { grid-template-columns: 1fr; gap: 15px; }
+  .workflow-copy { grid-row: 1; max-width: 560px; }
+  .app-showcase { max-width: 620px; width: 100%; margin-inline: auto; }
+  .showcase-stage { min-height: 0; }
+  .showcase-selection .showcase-stage { padding: 15px 10px; }
+  .showcase-create { padding: 10px 0; }
+  .effects-layout { gap: 35px; }
+  .effects-real { padding-inline: 0; }
+  .editor-composition { padding: 13px; border-radius: 20px; }
+  .editor-settings { gap: 7px; margin-top: 12px; }
+  .editor-setting { border-radius: 10px; }
+  .connection-layout { grid-template-columns: 1fr; gap: 24px; }
+  .connection-options { max-width: 600px; width: 100%; margin-inline: auto; }
+  .connection-options small { display: inline; margin-top: 0; }
+  .connection-visual { padding-top: 0; gap: 10px; }
+  .connection-drawing { min-height: 255px; }
+  .connection-beam { flex: none; width: 110px; margin-inline: 20px; }
+  .connection-orbit { max-width: 440px; }
+  .remote-real { gap: 35px; padding-inline: 0; }
+  .remote-detail h3 { font-size: 28px; }
+  .remote-detail > p { font-size: 12px; }
 }
 @media (max-width: 600px) {
-  .hero-real-proof { width: 320px; max-width: calc(100% - 4px); margin-right: 2px; padding: 16px; }
-  .hero-real-proof .app-crop { margin-top: 14px; }
-  .hero-real-proof > p { flex-wrap: wrap; gap: 3px 12px; font-size: 9px; }
-  .hero-real-proof > p > span { margin-left: auto; font-size: 8px; }
-  .app-showcase { padding: 19px; }
-  .showcase-heading { gap: 12px; font-size: 10px; }
-  .showcase-stage { min-height: 0; padding-block: 4px 5px; margin-top: 19px; }
-  .showcase-selection .showcase-stage { min-height: 500px; padding-bottom: 30px; }
-  .showcase-selection .shot-main { width: min(246px, 86%); margin-right: 29px; }
-  .showcase-selection .shot-detail { width: min(234px, 78%); right: -3px; bottom: 5px; }
-  .showcase-transfer .shot-main { width: min(325px, 100%); }
-  .showcase-create .shot-main { width: min(280px, 100%); }
-  .shot-open { min-height: 35px; padding: 9px 12px; font-size: 11px; }
-  .showcase-caption { margin-top: 16px; font-size: 11px; }
-  .effects-points { margin-top: 23px; gap: 11px; font-size: 13px; }
-  .effects-real { padding: 19px; }
-  .connection-visual { padding: 25px 22px; gap: 25px; }
-  .connection-shot { width: min(370px, 100%); }
-  .connection-shot .showcase-caption { font-size: 11px; }
-  .remote-real { grid-template-columns: 1fr; gap: 34px; padding: 26px 21px; }
-  .remote-device { width: min(285px, 100%); }
-  .remote-detail { padding-top: 28px; border-top: 1px solid #3c4934; }
-  .remote-detail > .eyebrow { font-size: 10px; }
-  .remote-detail h3 { margin-top: 14px; font-size: 29px; }
-  .remote-detail > p:not(.eyebrow) { margin-top: 17px; font-size: 13px; }
-  .remote-detail > p:not(.eyebrow) br { display: none; }
-  .remote-detail > .fine-print { font-size: 11px !important; line-height: 1.85; }
-  .remote-controls { margin-top: 23px; }
-  .screenshot-dialog { width: calc(100% - 20px); max-height: 92vh; max-height: 92dvh; border-radius: 8px; }
-  .screenshot-dialog-bar { align-items: flex-start; gap: 12px; padding: 13px; }
-  .screenshot-dialog-bar > strong { align-self: center; font-size: 12px; line-height: 1.75; }
-  .screenshot-close { min-width: 66px; min-height: 38px; padding-inline: 8px; gap: 8px; font-size: 11px; }
-  .screenshot-dialog-body { padding: 11px; scrollbar-gutter: auto; }
-  .screenshot-dialog-body > .app-crop { border-radius: 3px; }
-  .screenshot-dialog-note { padding: 11px 13px; font-size: 10px; }
-}
-@media (max-width: 360px) {
-  .app-showcase, .effects-real { padding: 15px; }
-  .showcase-heading { gap: 8px; font-size: 9px; }
-  .showcase-selection .showcase-stage { min-height: 460px; }
-  .showcase-selection .shot-main { margin-right: 25px; }
-  .showcase-selection .shot-detail { width: 81%; right: -2px; }
-  .connection-visual { padding-inline: 18px; }
-  .remote-real { padding-inline: 18px; }
-  .remote-detail h3 { font-size: 27px; }
+  .hero-real-proof { width: 320px; max-width: calc(100% - 4px); padding: 16px; margin-right: 2px; }
+  .workflow-panels { margin-top: 20px; }
+  .workflow-copy { padding-block: 20px; }
+  .app-showcase { padding: 15px 0 20px; }
+  .showcase-selection .showcase-stage { gap: 13px; padding-inline: 4px; grid-template-columns: 1.08fr 1fr; }
+  .showcase-selection .shot-detail { transform: translateY(12px) rotate(2deg); border-radius: 14px; }
+  .shot-card { border-radius: 12px; }
+  .showcase-transfer .shot-main { width: min(320px, 95%); }
+  .effects-layout { grid-template-columns: 1fr; gap: 35px; }
+  .effects-real { padding-inline: 2px; }
+  .effects-real .editor-composition { transform: none; }
+  .editor-composition { padding: 13px; border-radius: 20px; }
+  .editor-heading { padding-bottom: 12px; font-size: 16px; }
+  .editor-settings { gap: 7px; }
+  .effects-points { gap: 16px; }
+  .connection-layout { gap: 15px; }
+  .connection-options button { padding-block: 23px; }
+  .connection-options small { margin-left: 8px; }
+  .connection-drawing { min-height: 235px; }
+  .camera-outline { transform: scale(.8); margin-inline: -14px; }
+  .phone-outline { width: 75px; height: 140px; border-radius: 18px; }
+  .phone-outline img { width: 35px; height: 35px; }
+  .connection-beam { flex: 1; max-width: 90px; margin-inline: 12px; }
+  .connection-panel h3 { font-size: 18px; }
+  .connection-panel p { font-size: 12px; }
+  .connection-note { margin-top: 22px; }
+  .remote-real { grid-template-columns: 1fr; gap: 35px; padding-block: 5px 25px; }
+  .remote-device { width: min(330px, 100%); }
+  .remote-detail h3 { font-size: 29px; }
+  .remote-detail > p { margin-top: 16px; font-size: 13px; }
+  .remote-control-detail { margin-top: 24px; }
+  .remote-detail > .fine-print { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-real-proof { animation: none; transform: none; }
-  .shot-card { transition: none; }
-  .shot-card:hover { transform: none; }
+  .hero-real-proof, .shot-card, .connection-drawing * { animation: none !important; }
+  .connection-beam > span { opacity: 1; }
+  .connection-beam > span:nth-of-type(2) { left: 45%; }
+  .connection-beam > span:nth-of-type(3) { left: 90%; }
 }
