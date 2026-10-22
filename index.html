@@ -21,8 +21,9 @@
 <link rel="preload" as="image" href="assets/alpine-dawn.webp" fetchpriority="high">
 <link rel="stylesheet" href="styles.css?v=20261022b">
 <link rel="stylesheet" href="screenshots.css?v=20261022gallery1">
-<script src="app.js?v=20261022refine2" defer></script>
-<noscript><style>.workflow-tabs,.connection-options,.menu-toggle,.copy-contact span{display:none!important}.nav-links{display:none!important}</style></noscript>
+<link rel="stylesheet" href="feature-guide.css?v=20261022guide1">
+<script src="app.js?v=20261022guide1" defer></script>
+<noscript><style>.workflow-tabs,.connection-options,.guide-tabs,.menu-toggle,.copy-contact span{display:none!important}.nav-links{display:none!important}</style></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">跳转到主要内容</a>
@@ -33,6 +34,33 @@
 <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0m-9 4a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r=".5"/></symbol>
 <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m3 16 6-6 5 5 3-3 4 4"/><circle cx="16" cy="8" r="1"/></symbol>
 <symbol id="i-grid" viewBox="0 0 24 24"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></symbol>
+<symbol id="guide-i-camera" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="m8 6 1-3h6l1 3"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="guide-i-focus" viewBox="0 0 24 24"><path d="M3 8V3h5m8 0h5v5m0 8v5h-5M8 21H3v-5"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="guide-i-sliders" viewBox="0 0 24 24"><path d="M5 3v5m0 4v9M12 3v10m0 4v4M19 3v2m0 4v12M2 8h6m1 9h6m1-12h6"/></symbol>
+<symbol id="guide-i-signal" viewBox="0 0 24 24"><path d="M4 20v-4m5 4v-8m6 8V8m5 12V4"/></symbol>
+<symbol id="guide-i-frame" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h3m-3 0v3m8 3h-3m3 0v-3"/></symbol>
+<symbol id="guide-i-preset" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h4v4H7Z" fill="#e99b8c" stroke="none"/><path d="M13 8h4v4h-4Z" fill="#b5d998" stroke="none"/><path d="M7 14h4v3H7Z" fill="#8fbeca" stroke="none"/><path d="m14 18 4-4 2 2-4 4h-2Z"/></symbol>
+<symbol id="guide-i-histogram" viewBox="0 0 24 24"><path d="M3 20V12m4 8V7m5 13V3m5 17V9m4 11v-6"/></symbol>
+<symbol id="guide-i-zebra" viewBox="0 0 24 24"><path d="m3 9 12 12M3 3l18 18M9 3l12 12M15 3l6 6M3 15l6 6"/></symbol>
+<symbol id="guide-i-wave" viewBox="0 0 24 24"><path d="m2 15 3-7 3 10 4-15 4 18 3-10 3 4"/></symbol>
+<symbol id="guide-i-audio" viewBox="0 0 24 24"><path d="M4 9v6m4-9v12m4-15v18m4-15v12m4-9v6"/></symbol>
+<symbol id="guide-i-record" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="guide-i-level" viewBox="0 0 24 24"><path d="M2 12h6m8 0h6"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2m0 14v2"/></symbol>
+<symbol id="guide-i-expand" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="m8 9-3 3 3 3m8-6 3 3-3 3M5 12h14"/></symbol>
+<symbol id="guide-i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></symbol>
+<symbol id="guide-i-rotate" viewBox="0 0 24 24"><path d="M20 9a8 8 0 1 0 0 6m0-12v6h-6"/></symbol>
+<symbol id="guide-i-folder" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h5l2 4h7a2 2 0 0 1 2 2v10H3Z"/></symbol>
+<symbol id="guide-i-folders" viewBox="0 0 24 24"><path d="M2 9h7l2 3h10v9H2Zm3-3V3h7l2 3h7v3"/></symbol>
+<symbol id="guide-i-stack" viewBox="0 0 24 24"><rect x="7" y="7" width="14" height="14" rx="2"/><path d="M17 3H5a2 2 0 0 0-2 2v12"/></symbol>
+<symbol id="guide-i-touch" viewBox="0 0 24 24"><path d="M8 12V5a2 2 0 0 1 4 0v7l2-2 6 3v3c0 3-2 5-5 5h-3l-7-7a2 2 0 0 1 3-2Z"/></symbol>
+<symbol id="guide-i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5h2m4 0h2"/></symbol>
+<symbol id="guide-i-toggle" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="6"/><circle cx="16" cy="12" r="3"/></symbol>
+<symbol id="guide-i-theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18" fill="currentColor" stroke="none"/></symbol>
+<symbol id="guide-i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8Zm-10 9 10 5 10-5M2 16l10 5 10-5"/></symbol>
+<symbol id="guide-i-screen" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4m-4-11h4m-2-2v4"/></symbol>
+<symbol id="guide-i-spark" viewBox="0 0 24 24"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/></symbol>
+<symbol id="guide-i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></symbol>
+<symbol id="guide-i-message" viewBox="0 0 24 24"><path d="M3 3h18v14H9l-6 4Zm4 5h10M7 12h6"/></symbol>
 </svg>
 <header class="site-header"><nav class="nav wrap" aria-label="主导航">
 <a class="brand" href="#" aria-label="Z传，返回首页"><img src="icon-320.png" width="34" height="34" alt=""><span>Z传 <small>ZTRANSFER</small></span></a>
@@ -77,7 +105,115 @@
 </div></div></div></section>
 <section class="remote section-dark" id="remote"><div class="wrap">
 <div class="section-heading reveal"><div><p class="eyebrow">04 / 监看与遥控</p><h2>取景在眼前，<br><span class="lime-text">操控在指尖。</span></h2></div></div>
-<div class="remote-real reveal"><figure class="remote-device" aria-label="Z传监看与遥控界面"><div class="shot-card remote-composition"><span class="app-crop" style="aspect-ratio:1010/2010"><img src="assets/screenshots/remote.webp" alt="Z传监看界面及拍摄控制" width="1080" height="2374" loading="lazy" decoding="async" style="width:106.930693%;height:118.109453%;left:-3.465347%;top:-6.965174%"></span><div class="remote-scene"><img src="assets/monitor-cat.webp" alt="一只歪头的橘猫坐在洒满阳光的工作台上" width="1200" height="800" loading="lazy" decoding="async"><span class="scene-focus" aria-hidden="true"></span></div></div></figure><div class="remote-detail"><div class="remote-benefit"><h3>构图看得全</h3><p>高清、全屏预览，构图线与水平仪辅助取景。</p></div><div class="remote-benefit"><h3>曝光有依据</h3><p>直方图与斑马纹，辅助判断明暗分布与高光。</p></div><div class="remote-benefit"><h3>拍摄在手边</h3><p>点按对焦、调节曝光，遥控相机拍照与录像。</p></div></div></div>
+<div class="remote-real reveal"><figure class="remote-device" aria-label="Z传监看与遥控界面"><div class="shot-card remote-composition"><span class="app-crop" style="aspect-ratio:1010/2010"><img src="assets/screenshots/remote.webp" alt="Z传监看界面及拍摄控制" width="1080" height="2374" loading="lazy" decoding="async" style="width:106.930693%;height:118.109453%;left:-3.465347%;top:-6.965174%"></span><div class="remote-scene"><img src="assets/monitor-cat.webp" alt="一只歪头的橘猫坐在洒满阳光的工作台上" width="1200" height="800" loading="lazy" decoding="async"><span class="scene-focus" aria-hidden="true"></span></div></div></figure><div class="feature-guide" aria-label="监看与设置功能说明">
+<div class="guide-tabs" role="tablist" aria-label="功能说明分类"><button type="button" role="tab" id="guide-tab-monitor" aria-controls="guide-monitor" aria-selected="true" tabindex="0">监看工具</button><button type="button" role="tab" id="guide-tab-settings" aria-controls="guide-settings" aria-selected="false" tabindex="-1">使用设置</button></div>
+<p class="guide-hint">点开名称，了解用法。</p>
+<div class="guide-mode" id="guide-monitor" role="tabpanel" aria-labelledby="guide-tab-monitor" tabindex="0">
+<h3 class="guide-mode-title">监看工具</h3>
+<details class="guide-group" name="monitor-groups" data-guide-accordion="monitor-groups">
+<summary><span>基本操作</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-camera"/></svg></span><span class="guide-label">拍照与相机录像</span><span class="guide-plus" aria-hidden="true"></span></summary><p>圆形快门按钮可以拍照、开始或停止录像；长按对焦，松手拍摄，移出按钮取消。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-focus"/></svg></span><span class="guide-label">画面操作</span><span class="guide-plus" aria-hidden="true"></span></summary><p>追焦功能下，点击画面选择追焦目标，再点一次取消追焦。双指缩放，放大后可拖动，双击还原。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-sliders"/></svg></span><span class="guide-label">拍摄参数</span><span class="guide-plus" aria-hidden="true"></span></summary><p>按住拨轮上下拖动可快速调节曝光补偿、ISO、光圈和快门速度；ISO 上的 AUTO 按钮为自动 ISO 开关。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-photo"/></svg></span><span class="guide-label">回看</span><span class="guide-plus" aria-hidden="true"></span></summary><p>照片模式下查看最新照片：左右翻页，双击或双指缩放，单击退出。同名 JPG+NEF 只显示一次。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-signal"/></svg></span><span class="guide-label">连接与电量</span><span class="guide-plus" aria-hidden="true"></span></summary><p>顶部显示连接状态；电池可查看剩余电量。</p></details>
+</div>
+</details>
+<details class="guide-group" name="monitor-groups" data-guide-accordion="monitor-groups">
+<summary><span>相机控制</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">WB</span><span class="guide-label">白平衡</span><span class="guide-plus" aria-hidden="true"></span></summary><p>调整相机白平衡。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">AF</span><span class="guide-label">对焦模式</span><span class="guide-plus" aria-hidden="true"></span></summary><p>选择单次、连续或手动对焦等方式。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-focus"/></svg></span><span class="guide-label">对焦区域</span><span class="guide-plus" aria-hidden="true"></span></summary><p>选择画面中参与对焦的范围，如单点或宽区域。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-frame"/></svg></span><span class="guide-label">对焦框</span><span class="guide-plus" aria-hidden="true"></span></summary><p>显示或隐藏对焦框。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-preset"/></svg></span><span class="guide-label">优化校准</span><span class="guide-plus" aria-hidden="true"></span></summary><p>支持已有预设切换，点槽位对应画笔更换或清除。可用内置或文件夹中的 .np3，暂不支持灵活色彩的 .np3。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">PC</span><span class="guide-label">完全控制</span><span class="guide-plus" aria-hidden="true"></span></summary><p>部分机型开启后可调更多参数，机身操作可能受限。退出监看会解除。</p></details>
+</div>
+</details>
+<details class="guide-group" name="monitor-groups" data-guide-accordion="monitor-groups" open>
+<summary><span>曝光与色彩</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-histogram"/></svg></span><span class="guide-label">直方图</span><span class="guide-plus" aria-hidden="true"></span></summary><p>看画面明暗分布：左暗右亮。点按切换 RGB（红绿蓝）、亮度或关闭。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-zebra"/></svg></span><span class="guide-label">曝光辅助</span><span class="guide-plus" aria-hidden="true"></span></summary><p>斑马纹标出亮部，伪色用颜色区分明暗。点按依次切换两种效果或关闭。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">±EV</span><span class="guide-label">曝光尺</span><span class="guide-plus" aria-hidden="true"></span></summary><p>看相机的曝光指示，判断曝光偏亮还是偏暗。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-wave"/></svg></span><span class="guide-label">波形图</span><span class="guide-plus" aria-hidden="true"></span></summary><p>横向对应画面位置，波形越高越亮。点按切换亮度、RGB 或关闭。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">LUT</span><span class="guide-label">LUT</span><span class="guide-plus" aria-hidden="true"></span></summary><p>选含 .cube 文件的文件夹，支持文件夹中一层子文件夹作分类。只改变监看颜色，不会影响相机产出的照片或视频，不能与伪色同用。</p></details>
+</div>
+</details>
+<details class="guide-group" name="monitor-groups" data-guide-accordion="monitor-groups">
+<summary><span>画面辅助</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">HD</span><span class="guide-label">高清监看</span><span class="guide-plus" aria-hidden="true"></span></summary><p>切换监看清晰度，不改变相机照片和录像的画质。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">FPS</span><span class="guide-label">帧率显示</span><span class="guide-plus" aria-hidden="true"></span></summary><p>显示监看每秒收到的画面数，不是相机录像帧率。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-audio"/></svg></span><span class="guide-label">音频电平</span><span class="guide-plus" aria-hidden="true"></span></summary><p>显示相机左右声道的音量，仅录像模式可用。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-record"/></svg></span><span class="guide-label">监看录制</span><span class="guide-plus" aria-hidden="true"></span></summary><p>将监看画面录成视频存到手机，支持暂停，需高级版。与相机录像独立，优先用手机麦克风；不录入监看缩放、LUT 和辅助标记。</p></details>
+</div>
+</details>
+<details class="guide-group" name="monitor-groups" data-guide-accordion="monitor-groups">
+<summary><span>布局与工具</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></span><span class="guide-label">参考线</span><span class="guide-plus" aria-hidden="true"></span></summary><p>选择参考线帮助构图。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-level"/></svg></span><span class="guide-label">水平仪</span><span class="guide-plus" aria-hidden="true"></span></summary><p>显示相机是否倾斜，帮助保持画面水平。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-expand"/></svg></span><span class="guide-label">反挤压</span><span class="guide-plus" aria-hidden="true"></span></summary><p>使用变形宽银幕镜头时，按镜头倍率拉宽画面；普通镜头选 1×。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-lock"/></svg></span><span class="guide-label">锁定布局</span><span class="guide-plus" aria-hidden="true"></span></summary><p>固定当前横竖屏方向，解锁后才能旋转；不影响拍摄操作。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-rotate"/></svg></span><span class="guide-label">旋转布局</span><span class="guide-plus" aria-hidden="true"></span></summary><p>切换竖屏或左右横屏；锁定时先解锁。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-sliders"/></svg></span><span class="guide-label">管理工具</span><span class="guide-plus" aria-hidden="true"></span></summary><p>管理小工具显隐与顺序，拖动排序，点按显示或隐藏。照片、录像分别记住布局；隐藏辅助工具会关闭其效果。锁定和旋转不能移动或隐藏。</p></details>
+<details class="guide-item" name="monitor-items" data-guide-accordion="monitor-items"><summary><span class="guide-mark" aria-hidden="true">DISP</span><span class="guide-label">横屏 DISP</span><span class="guide-plus" aria-hidden="true"></span></summary><p>切换显示在监看画面上的信息。</p></details>
+</div>
+</details>
+<p class="guide-note">功能随相机、连接方式及拍摄模式而异。</p>
+</div>
+<div class="guide-mode" id="guide-settings" role="tabpanel" aria-labelledby="guide-tab-settings" tabindex="0">
+<h3 class="guide-mode-title">使用设置</h3>
+<details class="guide-group" name="settings-groups" data-guide-accordion="settings-groups" open>
+<summary><span>传输</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-folder"/></svg></span><span class="guide-label">传输目录</span><span class="guide-plus" aria-hidden="true"></span></summary><p>选择照片、RAW 和视频的保存文件夹。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-folders"/></svg></span><span class="guide-label">存放方式</span><span class="guide-plus" aria-hidden="true"></span></summary><p>统一保存，或按拍摄日期、文件类型分文件夹；效果图单独保存。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg></span><span class="guide-label">实时传输</span><span class="guide-plus" aria-hidden="true"></span></summary><p>按所选类型，将新拍摄的全部、JPG、RAW 或视频自动加入队列。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span><span class="guide-label">选完再传</span><span class="guide-plus" aria-hidden="true"></span></summary><p>挑选入队后不会立即传输，适合预览大图挑选照片时开启。</p></details>
+</div>
+</details>
+<details class="guide-group" name="settings-groups" data-guide-accordion="settings-groups">
+<summary><span>照片列表</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></span><span class="guide-label">每行数量</span><span class="guide-plus" aria-hidden="true"></span></summary><p>调整照片列表每行显示的数量。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-stack"/></svg></span><span class="guide-label">连拍成组</span><span class="guide-plus" aria-hidden="true"></span></summary><p>将连拍合为一组，展开后逐张查看。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-touch"/></svg></span><span class="guide-label">照片操作</span><span class="guide-plus" aria-hidden="true"></span></summary><p>切换点击与长按的预览、传输操作。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-calendar"/></svg></span><span class="guide-label">照片加载范围</span><span class="guide-plus" aria-hidden="true"></span></summary><p>按有照片的日期计数。选「5日」会加载最近 5 个有照片的日期，没拍照的日子不计入。</p></details>
+</div>
+</details>
+<details class="guide-group" name="settings-groups" data-guide-accordion="settings-groups">
+<summary><span>照片效果</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-toggle"/></svg></span><span class="guide-label">照片效果开关</span><span class="guide-plus" aria-hidden="true"></span></summary><p>在照片列表的设置中控制是否生成效果图；关闭后保留参数。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-sliders"/></svg></span><span class="guide-label">编辑照片效果</span><span class="guide-plus" aria-hidden="true"></span></summary><p>从照片列表打开设置，点卡片编辑；开启照片效果后，也可从 JPG 大图预览进入。</p></details>
+</div>
+</details>
+<details class="guide-group" name="settings-groups" data-guide-accordion="settings-groups">
+<summary><span>外观与操作</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-theme"/></svg></span><span class="guide-label">明暗</span><span class="guide-plus" aria-hidden="true"></span></summary><p>跟随系统，或固定使用深色、浅色。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true">A/文</span><span class="guide-label">语言</span><span class="guide-plus" aria-hidden="true"></span></summary><p>跟随系统，或选择应用语言。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-layers"/></svg></span><span class="guide-label">按钮风格</span><span class="guide-plus" aria-hidden="true"></span></summary><p>更换按钮的外观材质。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-touch"/></svg></span><span class="guide-label">触感反馈</span><span class="guide-plus" aria-hidden="true"></span></summary><p>开启或关闭操作时的振动。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-screen"/></svg></span><span class="guide-label">屏幕常亮</span><span class="guide-plus" aria-hidden="true"></span></summary><p>使用 App 时保持屏幕亮起。</p></details>
+</div>
+</details>
+<details class="guide-group" name="settings-groups" data-guide-accordion="settings-groups">
+<summary><span>版本与反馈</span><span class="guide-chevron" aria-hidden="true"></span></summary>
+<div class="guide-items">
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-spark"/></svg></span><span class="guide-label">解锁高级版</span><span class="guide-plus" aria-hidden="true"></span></summary><p>免费用户可查看高级版权益并激活。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-calendar"/></svg></span><span class="guide-label">续费</span><span class="guide-plus" aria-hidden="true"></span></summary><p>有到期时间的高级版用户可续费，延长有效期。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg></span><span class="guide-label">更新</span><span class="guide-plus" aria-hidden="true"></span></summary><p>检查并下载新版本。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-phone"/></svg></span><span class="guide-label">换机</span><span class="guide-plus" aria-hidden="true"></span></summary><p>高级版可复制激活码，在新设备激活后，本机恢复免费版。</p></details>
+<details class="guide-item" name="settings-items" data-guide-accordion="settings-items"><summary><span class="guide-mark" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#guide-i-message"/></svg></span><span class="guide-label">反馈</span><span class="guide-plus" aria-hidden="true"></span></summary><p>复制客服 QQ 号。</p></details>
+</div>
+</details>
+<p class="guide-note">点按切换选项；多档拨轮可上下拖动，松手生效。</p>
+</div>
+</div></div>
 </div></section>
 <section class="plans section-light" id="plans"><div class="wrap">
 <div class="section-heading reveal"><div><p class="eyebrow">05 / 版本权益</p><h2>免费起步，<br>按需升级。</h2></div></div>

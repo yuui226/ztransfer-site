@@ -48,6 +48,16 @@ document.querySelectorAll('[role="tablist"]').forEach(list => {
   });
 });
 
+// Keep each guide compact, including browsers without exclusive details support.
+document.querySelectorAll('.feature-guide [data-guide-accordion]').forEach(detail => {
+  detail.addEventListener('toggle', () => {
+    if (!detail.open) return;
+    detail.closest('.feature-guide').querySelectorAll('[data-guide-accordion]').forEach(other => {
+      if (other !== detail && other.dataset.guideAccordion === detail.dataset.guideAccordion) other.open = false;
+    });
+  });
+});
+
 const copyStatus = document.querySelector('.copy-status');
 let copyTimer;
 document.querySelector('.copy-contact').addEventListener('click', async event => {
